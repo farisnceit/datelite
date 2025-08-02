@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal DatePicker Test</title>
+    <link rel="stylesheet" href="../src/datelite.css">
+    <style>
+        body { padding: 50px; font-family: Arial, sans-serif; }
+        input { padding: 10px; width: 200px; }
+        .status { margin: 20px 0; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Minimal DatePicker Test</h1>
+    
+    <input type="text" id="test-input" placeholder="Click to select date">
+    
+    <div class="status" id="status">Initializing...</div>
+    
+    <script src="DatePicker.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                const picker = new DatePicker('#test-input', {
+                    mode: 'single',
+                    onReady: () => statusDiv.textContent = 'DatePicker ready - click input to open',
+                    onOpen: () => statusDiv.textContent = 'DatePicker opened!',
+                    onClose: () => statusDiv.textContent = 'DatePicker closed',
+                    onChange: (date) => statusDiv.textContent = `Date selected: ${date ? date.toDateString() : 'None'}`
+                });
+                
+                // Test manual open after 2 seconds
+                setTimeout(() => {
+                    console.log('Testing manual open...');
+                    picker.open();
+                }, 2000);
+                
+            } catch (error) {
+                statusDiv.textContent = `Error: ${error.message}`;
+                console.error('DatePicker error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

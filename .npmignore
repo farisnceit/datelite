@@ -1,0 +1,61 @@
+# Development files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Source control
+.git/
+.gitignore
+
+# Development dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+tests/
+coverage/
+.nyc_output/
+jest.config.js
+
+# Build tools
+rollup.config.js
+postcss.config.js
+.babelrc
+.eslintrc*
+.prettierrc*
+
+# Documentation source
+docs-src/
+
+# Examples and demos (keep example.html for users)
+examples/
+demo/
+playground/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Keep these files for npm package
+!README.md
+!LICENSE
+!CHANGELOG.md
+!package.json
+!dist/
+!src/
+!types/
+!example.html
+!CSS_CUSTOMIZATION.md

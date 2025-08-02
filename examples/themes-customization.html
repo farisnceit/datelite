@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Themes & Customization Examples</title>
+    <link rel="stylesheet" href="../src/datelite.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .theme-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        
+        .theme-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .theme-demo {
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .theme-demo h4 {
+            margin-top: 0;
+            color: #495057;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            max-width: 250px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .output {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .code {
+            background: #f1f3f4;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            overflow-x: auto;
+        }
+        
+        .theme-switcher {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .theme-switcher button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .theme-switcher button.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        /* Custom Theme Examples */
+        .datepicker-container.red-theme {
+            --dp-primary-color: #dc3545;
+            --dp-primary-hover: #c82333;
+            --dp-primary-light: #f8d7da;
+            --dp-border-focus: #dc3545;
+            --dp-shadow-focus: 0 0 0 2px rgba(220, 53, 69, 0.25);
+        }
+        
+        .datepicker-container.orange-theme {
+            --dp-primary-color: #fd7e14;
+            --dp-primary-hover: #e8650e;
+            --dp-primary-light: #ffe8d4;
+            --dp-border-focus: #fd7e14;
+            --dp-shadow-focus: 0 0 0 2px rgba(253, 126, 20, 0.25);
+        }
+        
+        .datepicker-container.teal-theme {
+            --dp-primary-color: #20c997;
+            --dp-primary-hover: #1aa179;
+            --dp-primary-light: #d1ecf1;
+            --dp-border-focus: #20c997;
+            --dp-shadow-focus: 0 0 0 2px rgba(32, 201, 151, 0.25);
+        }
+        
+        .datepicker-container.rounded-theme {
+            --dp-border-radius-sm: 12px;
+            --dp-border-radius-md: 16px;
+            --dp-border-radius-lg: 20px;
+            --dp-day-size: 40px;
+        }
+        
+        .datepicker-container.compact-theme {
+            --dp-day-size: 28px;
+            --dp-button-height: 24px;
+            --dp-font-size-base: 12px;
+            --dp-font-size-lg: 14px;
+            --dp-spacing-lg: 12px;
+            --dp-container-min-width: 240px;
+        }
+        
+        .datepicker-container.large-theme {
+            --dp-day-size: 48px;
+            --dp-button-height: 40px;
+            --dp-font-size-base: 16px;
+            --dp-font-size-lg: 18px;
+            --dp-spacing-lg: 20px;
+            --dp-container-min-width: 320px;
+        }
+        
+        .datepicker-container.gradient-theme {
+            --dp-primary-color: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            --dp-primary-hover: linear-gradient(45deg, #5a6fd8 0%, #6a4190 100%);
+        }
+        
+        .datepicker-container.gradient-theme .datepicker-day.selected {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .datepicker-container.neon-theme {
+            --dp-bg-primary: #0a0a0a;
+            --dp-bg-secondary: #1a1a1a;
+            --dp-text-primary: #00ff88;
+            --dp-text-secondary: #88ff88;
+            --dp-border-color: #00ff88;
+            --dp-primary-color: #00ff88;
+            --dp-primary-hover: #00cc66;
+            --dp-primary-light: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>Themes & Customization Examples</h1>
+    <p>Explore different themes and customization options for the DatePicker component.</p>
+    
+    <div class="theme-switcher">
+        <button onclick="switchGlobalTheme('default')" class="active" id="global-default">Default</button>
+        <button onclick="switchGlobalTheme('dark')" id="global-dark">Dark</button>
+        <button onclick="switchGlobalTheme('minimal')" id="global-minimal">Minimal</button>
+    </div>
+    
+    <!-- Built-in Themes -->
+    <div class="theme-section">
+        <h3>Built-in Themes</h3>
+        <div class="theme-grid">
+            <div class="theme-demo">
+                <h4>Default Theme</h4>
+                <div class="form-group">
+                    <label for="default-theme">Default blue theme:</label>
+                    <input type="text" id="default-theme" placeholder="Default theme">
+                </div>
+                <div class="output" id="default-output">No date selected</div>
+                <div class="code">
+new DatePicker('#input', {
+    theme: 'default'
+});
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Dark Theme</h4>
+                <div class="form-group">
+                    <label for="dark-theme">Dark mode theme:</label>
+                    <input type="text" id="dark-theme" placeholder="Dark theme">
+                </div>
+                <div class="output" id="dark-output">No date selected</div>
+                <div class="code">
+new DatePicker('#input', {
+    theme: 'dark'
+});
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Minimal Theme</h4>
+                <div class="form-group">
+                    <label for="minimal-theme">Clean minimal theme:</label>
+                    <input type="text" id="minimal-theme" placeholder="Minimal theme">
+                </div>
+                <div class="output" id="minimal-output">No date selected</div>
+                <div class="code">
+new DatePicker('#input', {
+    theme: 'minimal'
+});
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Color Themes -->
+    <div class="theme-section">
+        <h3>Custom Color Themes</h3>
+        <div class="theme-grid">
+            <div class="theme-demo">
+                <h4>Red Theme</h4>
+                <div class="form-group">
+                    <label for="red-theme">Red color scheme:</label>
+                    <input type="text" id="red-theme" placeholder="Red theme">
+                </div>
+                <div class="output" id="red-output">No date selected</div>
+                <div class="code">
+.datepicker-container.red-theme {
+    --dp-primary-color: #dc3545;
+    --dp-primary-hover: #c82333;
+    --dp-primary-light: #f8d7da;
+}
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Orange Theme</h4>
+                <div class="form-group">
+                    <label for="orange-theme">Orange color scheme:</label>
+                    <input type="text" id="orange-theme" placeholder="Orange theme">
+                </div>
+                <div class="output" id="orange-output">No date selected</div>
+                <div class="code">
+.datepicker-container.orange-theme {
+    --dp-primary-color: #fd7e14;
+    --dp-primary-hover: #e8650e;
+    --dp-primary-light: #ffe8d4;
+}
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Teal Theme</h4>
+                <div class="form-group">
+                    <label for="teal-theme">Teal color scheme:</label>
+                    <input type="text" id="teal-theme" placeholder="Teal theme">
+                </div>
+                <div class="output" id="teal-output">No date selected</div>
+                <div class="code">
+.datepicker-container.teal-theme {
+    --dp-primary-color: #20c997;
+    --dp-primary-hover: #1aa179;
+    --dp-primary-light: #d1ecf1;
+}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Size Themes -->
+    <div class="theme-section">
+        <h3>Size Variations</h3>
+        <div class="theme-grid">
+            <div class="theme-demo">
+                <h4>Compact Theme</h4>
+                <div class="form-group">
+                    <label for="compact-theme">Smaller components:</label>
+                    <input type="text" id="compact-theme" placeholder="Compact theme">
+                </div>
+                <div class="output" id="compact-output">No date selected</div>
+                <div class="code">
+.datepicker-container.compact-theme {
+    --dp-day-size: 28px;
+    --dp-font-size-base: 12px;
+    --dp-container-min-width: 240px;
+}
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Large Theme</h4>
+                <div class="form-group">
+                    <label for="large-theme">Larger components:</label>
+                    <input type="text" id="large-theme" placeholder="Large theme">
+                </div>
+                <div class="output" id="large-output">No date selected</div>
+                <div class="code">
+.datepicker-container.large-theme {
+    --dp-day-size: 48px;
+    --dp-font-size-base: 16px;
+    --dp-container-min-width: 320px;
+}
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Rounded Theme</h4>
+                <div class="form-group">
+                    <label for="rounded-theme">Extra rounded corners:</label>
+                    <input type="text" id="rounded-theme" placeholder="Rounded theme">
+                </div>
+                <div class="output" id="rounded-output">No date selected</div>
+                <div class="code">
+.datepicker-container.rounded-theme {
+    --dp-border-radius-md: 16px;
+    --dp-border-radius-lg: 20px;
+    --dp-day-size: 40px;
+}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Special Effects -->
+    <div class="theme-section">
+        <h3>Special Effect Themes</h3>
+        <div class="theme-grid">
+            <div class="theme-demo">
+                <h4>Gradient Theme</h4>
+                <div class="form-group">
+                    <label for="gradient-theme">Gradient colors:</label>
+                    <input type="text" id="gradient-theme" placeholder="Gradient theme">
+                </div>
+                <div class="output" id="gradient-output">No date selected</div>
+                <div class="code">
+.datepicker-container.gradient-theme 
+.datepicker-day.selected {
+    background: linear-gradient(45deg, 
+        #667eea 0%, #764ba2 100%);
+}
+                </div>
+            </div>
+            
+            <div class="theme-demo">
+                <h4>Neon Theme</h4>
+                <div class="form-group">
+                    <label for="neon-theme">Neon glow effect:</label>
+                    <input type="text" id="neon-theme" placeholder="Neon theme">
+                </div>
+                <div class="output" id="neon-output">No date selected</div>
+                <div class="code">
+.datepicker-container.neon-theme {
+    --dp-bg-primary: #0a0a0a;
+    --dp-text-primary: #00ff88;
+    --dp-primary-color: #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../DatePicker.js"></script>
+    <script>
+        // Built-in themes
+        const defaultPicker = new DatePicker('#default-theme', {
+            theme: 'default',
+            onChange: function(date) {
+                document.getElementById('default-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const darkPicker = new DatePicker('#dark-theme', {
+            theme: 'dark',
+            onChange: function(date) {
+                document.getElementById('dark-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const minimalPicker = new DatePicker('#minimal-theme', {
+            theme: 'minimal',
+            onChange: function(date) {
+                document.getElementById('minimal-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        // Custom color themes
+        const redPicker = new DatePicker('#red-theme', {
+            theme: 'red-theme',
+            onChange: function(date) {
+                document.getElementById('red-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const orangePicker = new DatePicker('#orange-theme', {
+            theme: 'orange-theme',
+            onChange: function(date) {
+                document.getElementById('orange-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const tealPicker = new DatePicker('#teal-theme', {
+            theme: 'teal-theme',
+            onChange: function(date) {
+                document.getElementById('teal-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        // Size themes
+        const compactPicker = new DatePicker('#compact-theme', {
+            theme: 'compact-theme',
+            onChange: function(date) {
+                document.getElementById('compact-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const largePicker = new DatePicker('#large-theme', {
+            theme: 'large-theme',
+            onChange: function(date) {
+                document.getElementById('large-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const roundedPicker = new DatePicker('#rounded-theme', {
+            theme: 'rounded-theme',
+            onChange: function(date) {
+                document.getElementById('rounded-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        // Special effect themes
+        const gradientPicker = new DatePicker('#gradient-theme', {
+            theme: 'gradient-theme',
+            onChange: function(date) {
+                document.getElementById('gradient-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        const neonPicker = new DatePicker('#neon-theme', {
+            theme: 'neon-theme',
+            onChange: function(date) {
+                document.getElementById('neon-output').textContent = 
+                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
+            }
+        });
+
+        // Global theme switcher
+        function switchGlobalTheme(theme) {
+            // Remove active class from all theme buttons
+            document.querySelectorAll('.theme-switcher button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to selected theme
+            document.getElementById(`global-${theme}`).classList.add('active');
+            
+            // Update all datepicker containers with built-in themes
+            document.querySelectorAll('.datepicker-container').forEach(container => {
+                if (container.classList.contains('default') || 
+                    container.classList.contains('dark') || 
+                    container.classList.contains('minimal')) {
+                    container.className = container.className.replace(/\b(default|dark|minimal)\b/g, '');
+                    container.classList.add(theme);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

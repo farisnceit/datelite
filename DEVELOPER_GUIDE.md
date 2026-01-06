@@ -1,129 +1,406 @@
-# DatePicker Developer Guide
+# DateLite Developer Documentation
 
 ## Table of Contents
+
 1. [Architecture Overview](#architecture-overview)
-2. [Core Components](#core-components)
-3. [State Management](#state-management)
-4. [Event System](#event-system)
-5. [Rendering Pipeline](#rendering-pipeline)
-6. [Configuration System](#configuration-system)
-7. [API Methods](#api-methods)
-8. [Styling Architecture](#styling-architecture)
-9. [Extension Points](#extension-points)
-10. [Best Practices](#best-practices)
-11. [Troubleshooting](#troubleshooting)
+2. [Code Structure](#code-structure)
+3. [Core Components](#core-components)
+4. [Styling System](#styling-system)
+5. [State Management](#state-management)
+6. [Event System](#event-system)
+7. [Positioning Engine](#positioning-engine)
+8. [Date Restriction System](#date-restriction-system)
+9. [Rendering Pipeline](#rendering-pipeline)
+10. [API Design](#api-design)
+11. [Build System](#build-system)
+12. [Contributing Guidelines](#contributing-guidelines)
+
+---
 
 ## Architecture Overview
 
-The DatePicker is built using modern ES6+ class-based architecture with a clear separation of concerns:
+DateLite is a **vanilla JavaScript** date picker component built with modern ES6+ features. It follows an **object-oriented** design pattern with a single `DatePicker` class that encapsulates all functionality.
+
+### Design Principles
+
+1. **Zero Dependencies**: Pure JavaScript with no external libraries
+2. **Modular Architecture**: Clear separation of concerns
+3. **Event-Driven**: Reactive updates through event hooks
+4. **CSS Variables**: Highly customizable theming system
+5. **Accessibility First**: ARIA labels and keyboard navigation
+6. **Progressive Enhancement**: Works with or without JavaScript
+
+### File Structure
 
 ```
-DatePicker Class
-├── Configuration Management
-├── State Management
-├── DOM Management
-├── Event Handling
-├── Rendering Engine
-├── API Methods
-└── Utility Functions
+datelite/
+├── src/
+│   ├── DatePicker.js       # Main component class (1977 lines)
+│   └── datelite.css        # Styles with CSS variables (918 lines)
+├── dist/
+│   ├── datelite.js         # Bundled JavaScript
+│   ├── datelite.min.js     # Minified JavaScript
+│   ├── datelite.css        # Processed CSS
+│   └── datelite.min.css    # Minified CSS
+├── examples/               # Demo pages
+└── package.json           # Build configuration
 ```
 
-### Key Design Principles
+---
 
-1. **Modular Design**: Each feature is self-contained and can be enabled/disabled
-2. **Event-Driven**: Uses callbacks for all user interactions
-3. **Immutable State**: State changes trigger re-renders
-4. **Progressive Enhancement**: Works without JavaScript (basic input)
-5. **Accessibility First**: ARIA labels, keyboard navigation, screen reader support
+## Code Structure
+
+### DatePicker Class (src/DatePicker.js)
+
+The main class is organized into logical sections:
+
+#### 1. **Constructor & Initialization** (Lines 6-209)
+
+```javascript
+constructor(element, (options = {}));
+```
+
+- Initializes default options (67 configuration options)
+- Merges user options with defaults
+- Sets up initial state
+- Binds methods to maintain context
+- Calls initialization methods
+
+**Key Default Options:**
+
+- `mode`: 'single' | 'range' | 'multiple'
+- `format`: Date format string (default: 'Y-m-d')
+- `inline`: Boolean for always-visible calendar
+- `position`: 'auto' | 'top' | 'bottom' | 'left' | 'right'
+- `theme`: 'default' | 'dark' | 'minimal'
+
+#### 2. **DOM Setup** (Lines 211-506)
+
+Methods for creating and managing DOM elements:
+
+```javascript
+setupDOM(); // Main DOM setup orchestrator
+createCalendarStructure(); // Creates calendar container
+getCalendarHTML(); // Generates calendar HTML
+createIcon(); // Creates calendar icon
+wrapInputWithIcon(); // Wraps input with icon container
+```
+
+**DOM Structure:**
+
+```
+.datepicker-container
+  └── .datepicker-input-wrapper
+      ├── input (user's input element)
+      └── .datepicker-icon (calendar icon)
+  └── .datepicker-calendar
+      ├── .datepicker-header
+      │   ├── .datepicker-prev-btn
+      │   ├── .datepicker-month-year
+      │   └── .datepicker-next-btn
+      ├── .datepicker-body
+      │   ├── .datepicker-weekdays
+      │   └── .datepicker-days
+      ├── .datepicker-time (if enableTime)
+      └── .datepicker-footer
+```
+
+#### 3. **Event Handling** (Lines 508-1208)
+
+Comprehensive event system:
+
+```javascript
+setupEvents(); // Attaches all event listeners
+handleDocumentClick(); // Outside click detection
+handleKeydown(); // Keyboard navigation
+handleDateSelect(); // Date selection logic
+handlePrevMonth(); // Month navigation
+handleNextMonth(); // Month navigation
+handleTimeChange(); // Time picker updates
+```
+
+**Event Flow:**
+
+1. User interacts with UI
+2. Event handler captures action
+3. State is updated
+4. Hooks are triggered (onChange, onOpen, etc.)
+5. UI is re-rendered
+6. Position is updated
+
+#### 4. **Public API** (Lines 1212-1639)
+
+Methods exposed to users:
+
+**Core Methods:**
+
+- `open()` - Opens the calendar
+- `close()` - Closes the calendar
+- `toggle()` - Toggles visibility
+- `setDate(date)` - Sets selected date
+- `getDate()` - Returns selected date(s)
+- `clear()` - Clears selection
+- `destroy()` - Cleanup and removal
+
+**Configuration Methods:**
+
+- `setMinDate(date)` - Set minimum date
+- `setMaxDate(date)` - Set maximum date
+- `setDisableWeekends(bool)` - Toggle weekend blocking
+- `setBlockPastDates(bool)` - Toggle past date blocking
+- `addDisabledDates(dates)` - Add disabled dates
+- `clearDisabledDates()` - Clear disabled dates
+
+#### 5. **Utility Methods** (Lines 1641-1977)
+
+Helper functions for internal operations:
+
+```javascript
+formatDate(date, format); // Date formatting
+parseDate(dateStr); // Date parsing
+isSameDay(date1, date2); // Date comparison
+isDateDisabled(date); // Check if date is disabled
+isDateSelected(date); // Check if date is selected
+isDateInRange(date); // Check if date in range
+getDaysInMonth(year, month); // Get days count
+getFirstDayOfMonth(year, month); // Get first day
+```
+
+---
 
 ## Core Components
 
-### 1. Constructor & Initialization
+### 1. **State Management**
 
-```javascript
-constructor(element, options = {}) {
-    // Element validation and setup
-    this.element = typeof element === 'string' ? document.querySelector(element) : element;
-    
-    // Configuration merging
-    this.options = { ...this.defaultOptions, ...options };
-    
-    // State initialization
-    this.state = { /* initial state */ };
-    
-    // DOM references
-    this.dom = { /* DOM element references */ };
-    
-    // Event callbacks
-    this.callbacks = { /* user-defined callbacks */ };
-    
-    // Method binding and initialization
-    this.bindMethods();
-    this.init();
-}
-```
-
-**Key Points:**
-- Validates element existence before proceeding
-- Merges user options with defaults
-- Initializes all internal state
-- Binds methods to maintain `this` context
-
-### 2. DOM Management
-
-The DatePicker creates and manages several DOM structures:
-
-```javascript
-// Main container structure
-<div class="datepicker-container">
-    <div class="datepicker-calendar">
-        <div class="datepicker-header">
-            <!-- Navigation and month/year selectors -->
-        </div>
-        <div class="datepicker-body">
-            <!-- Calendar grid -->
-        </div>
-        <div class="datepicker-time">
-            <!-- Time picker (if enabled) -->
-        </div>
-        <div class="datepicker-footer">
-            <!-- Action buttons -->
-        </div>
-    </div>
-</div>
-```
-
-**DOM Creation Flow:**
-1. `setupDOM()` - Creates main container
-2. `setupInputWithIcon()` - Handles input wrapper and icon
-3. `createCalendarStructure()` - Builds calendar HTML
-4. `render()` - Populates with data
-
-## State Management
-
-### State Structure
+The component maintains state in the `state` object:
 
 ```javascript
 this.state = {
-    // UI State
-    isOpen: false,
-    currentMonth: new Date().getMonth(),
-    currentYear: new Date().getFullYear(),
-    viewMode: 'days', // 'days', 'months', 'years'
-    
-    // Selection State
-    selectedDates: [],        // For single/multiple modes
-    startDate: null,          // For range mode
-    endDate: null,            // For range mode
-    
-    // Range Confirmation State
-    tempStartDate: null,      // Temporary selection
-    tempEndDate: null,        // Temporary selection
-    confirmedStartDate: null, // Confirmed selection
-    confirmedEndDate: null,   // Confirmed selection
-    
-    // Time State
-    currentTime: { hours: 12, minutes: 0, seconds: 0 }
+  currentMonth: new Date().getMonth(),
+  currentYear: new Date().getFullYear(),
+  selectedDate: null, // For 'single' mode
+  selectedDates: [], // For 'multiple' mode
+  rangeStart: null, // For 'range' mode
+  rangeEnd: null, // For 'range' mode
+  isOpen: false,
+  focusedDate: null,
+};
+```
+
+**State Updates:**
+
+- All state changes trigger re-renders
+- State is immutable (new objects created)
+- Hooks are called after state updates
+
+### 2. **Date Selection Modes**
+
+#### Single Mode
+
+```javascript
+handleDateSelect(date) {
+  this.state.selectedDate = date;
+  this.updateInputValue();
+  this.triggerChange();
+  if (this.options.closeOnSelect) {
+    this.close();
+  }
+}
+```
+
+#### Range Mode
+
+```javascript
+handleDateSelect(date) {
+  if (!this.state.rangeStart || this.state.rangeEnd) {
+    // Start new range
+    this.state.rangeStart = date;
+    this.state.rangeEnd = null;
+  } else {
+    // Complete range
+    this.state.rangeEnd = date;
+    this.updateInputValue();
+    this.triggerChange();
+  }
+}
+```
+
+#### Multiple Mode
+
+```javascript
+handleDateSelect(date) {
+  const index = this.state.selectedDates.findIndex(
+    d => this.isSameDay(d, date)
+  );
+  if (index > -1) {
+    // Remove date
+    this.state.selectedDates.splice(index, 1);
+  } else {
+    // Add date
+    this.state.selectedDates.push(date);
+  }
+}
+```
+
+### 3. **Rendering System**
+
+The rendering pipeline follows this flow:
+
+```
+render()
+  ├── renderHeader()      // Month/year navigation
+  ├── renderWeekdays()    // Day name headers
+  └── renderDays()        // Calendar grid
+      └── generateDaysHTML()
+          └── getDayClasses()  // Apply CSS classes
+```
+
+**Rendering Optimization:**
+
+- Only re-renders changed elements
+- Uses `innerHTML` for batch updates
+- Debounced position updates
+
+---
+
+## Styling System
+
+### CSS Architecture (src/datelite.css)
+
+The stylesheet is organized into sections:
+
+#### 1. **CSS Custom Properties** (Lines 6-88)
+
+```css
+:root {
+  /* Colors */
+  --dp-primary-color: #3b82f6;
+  --dp-primary-hover: #1d4ed8;
+  --dp-bg-primary: #ffffff;
+  --dp-text-primary: #1e293b;
+
+  /* Spacing */
+  --dp-spacing-xs: 4px;
+  --dp-spacing-sm: 8px;
+  --dp-spacing-md: 12px;
+
+  /* Sizes */
+  --dp-day-size: 40px;
+  --dp-button-height: 36px;
+
+  /* Shadows */
+  --dp-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --dp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --dp-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+```
+
+**Theming Strategy:**
+
+- All colors use CSS variables
+- Easy to override for custom themes
+- Dark mode support via variable overrides
+
+#### 2. **Component Styles** (Lines 90-863)
+
+**Container & Layout:**
+
+```css
+.datepicker-container {
+  position: relative;
+  display: inline-block;
+}
+
+.datepicker-calendar {
+  position: absolute;
+  z-index: var(--dp-z-index-popup);
+  background: var(--dp-bg-primary);
+  border-radius: var(--dp-border-radius-lg);
+  box-shadow: var(--dp-shadow-lg);
+}
+```
+
+**Calendar Grid:**
+
+```css
+.datepicker-days {
+  display: grid;
+  grid-template-columns: repeat(7, var(--dp-day-size));
+  gap: 4px;
+}
+
+.datepicker-day {
+  width: var(--dp-day-size);
+  height: var(--dp-day-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--dp-border-radius-md);
+  transition: var(--dp-transition-base);
+}
+```
+
+**State Classes:**
+
+```css
+.datepicker-day.selected {
+  background: var(--dp-primary-color);
+  color: var(--dp-text-white);
+  font-weight: 700;
+}
+
+.datepicker-day.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.datepicker-day.in-range {
+  background: var(--dp-primary-light);
+}
+```
+
+#### 3. **Responsive Design** (Lines 864-918)
+
+```css
+@media (max-width: 768px) {
+  .datepicker-calendar {
+    position: fixed;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+```
+
+---
+
+## State Management
+
+### State Object Structure
+
+```javascript
+this.state = {
+  // Calendar view state
+  currentMonth: number,      // 0-11
+  currentYear: number,       // Full year
+
+  // Selection state
+  selectedDate: Date | null,
+  selectedDates: Date[],
+  rangeStart: Date | null,
+  rangeEnd: Date | null,
+
+  // UI state
+  isOpen: boolean,
+  focusedDate: Date | null,
+
+  // Time state (if enableTime)
+  selectedHour: number,
+  selectedMinute: number,
+  selectedPeriod: 'AM' | 'PM'
 };
 ```
 
@@ -131,556 +408,503 @@ this.state = {
 
 ```javascript
 // 1. Update state
-this.state.currentMonth = newMonth;
+this.state.selectedDate = newDate;
 
-// 2. Trigger re-render
+// 2. Update UI
+this.updateInputValue();
 this.rerender();
 
-// 3. Fire callbacks
-this.callbacks.onMonthChange(this.state.currentMonth, this.state.currentYear);
+// 3. Trigger hooks
+this.triggerChange();
+
+// 4. Update position (if needed)
+this.updatePosition();
 ```
 
-**Important:** Always call `rerender()` after state changes to update the UI.
+---
 
 ## Event System
 
-### Event Binding Architecture
+### Event Hooks
+
+All hooks receive relevant data and are called at specific lifecycle points:
 
 ```javascript
-setupEvents() {
-    // Input events (for popup mode)
-    if (!this.options.inline && this.dom.input) {
-        this.dom.input.addEventListener('click', this.open);
-        this.dom.input.addEventListener('keydown', this.handleKeydown);
-    }
-    
-    // Calendar events
-    this.dom.calendar.addEventListener('click', this.handleCalendarClick);
-    this.dom.calendar.addEventListener('change', this.handleDropdownChange);
-    
-    // Document events (for closing)
-    document.addEventListener('click', this.handleDocumentClick);
-    document.addEventListener('keydown', this.handleKeydown);
+// Initialization
+onReady: function() {
+  // Called when picker is initialized
+}
+
+// User interactions
+onChange: function(selectedDate) {
+  // Called when date selection changes
+}
+
+onOpen: function() {
+  // Called when calendar opens
+}
+
+onClose: function() {
+  // Called when calendar closes
+}
+
+// Navigation
+onMonthChange: function(year, month) {
+  // Called when month changes
+}
+
+onYearChange: function(year) {
+  // Called when year changes
 }
 ```
 
-### Event Delegation Pattern
-
-The DatePicker uses event delegation for efficiency:
+### Hook Triggering
 
 ```javascript
-handleCalendarClick(event) {
-    const target = event.target;
-    
-    // Route to specific handlers based on CSS classes
-    if (target.classList.contains('datepicker-day')) {
-        this.handleDateSelect(new Date(target.dataset.date));
-    } else if (target.classList.contains('datepicker-prev-btn')) {
-        this.handlePrevMonth();
-    } else if (target.classList.contains('datepicker-next-btn')) {
-        this.handleNextMonth();
-    }
-    // ... more handlers
+triggerChange() {
+  if (this.options.onChange) {
+    const value = this.getDate();
+    this.options.onChange.call(this, value);
+  }
 }
 ```
 
-### Callback System
+---
+
+## Positioning Engine
+
+### Position Calculation (Lines 854-946)
+
+The positioning system handles:
+
+1. **Auto positioning** - Stays within viewport
+2. **Fixed positioning** - Specific coordinates
+3. **Relative positioning** - Relative to input
+4. **Offset adjustments** - Fine-tune position
 
 ```javascript
-// User-defined callbacks
-this.callbacks = {
-    onReady: options.onReady || (() => {}),
-    onOpen: options.onOpen || (() => {}),
-    onClose: options.onClose || (() => {}),
-    onChange: options.onChange || (() => {}),
-    onSelect: options.onSelect || (() => {}),
-    // ... more callbacks
-};
+updatePosition() {
+  // 1. Get input position
+  const inputRect = this.dom.input.getBoundingClientRect();
 
-// Triggering callbacks
-this.callbacks.onChange(this.getDate());
+  // 2. Get calendar dimensions
+  const calendarRect = this.dom.calendar.getBoundingClientRect();
+
+  // 3. Calculate viewport space
+  const viewportHeight = window.innerHeight;
+  const viewportWidth = window.innerWidth;
+
+  // 4. Determine best position
+  let top, left;
+
+  if (this.options.position === 'auto') {
+    // Smart positioning
+    const spaceBelow = viewportHeight - inputRect.bottom;
+    const spaceAbove = inputRect.top;
+
+    if (spaceBelow >= calendarRect.height) {
+      top = inputRect.bottom + this.options.offsetY;
+    } else if (spaceAbove >= calendarRect.height) {
+      top = inputRect.top - calendarRect.height + this.options.offsetY;
+    } else {
+      top = Math.max(10, (viewportHeight - calendarRect.height) / 2);
+    }
+  }
+
+  // 5. Apply position
+  this.dom.calendar.style.top = `${top}px`;
+  this.dom.calendar.style.left = `${left}px`;
+}
 ```
+
+---
+
+## Date Restriction System
+
+### Restriction Types
+
+1. **Min/Max Dates**
+
+```javascript
+isDateDisabled(date) {
+  if (this.options.minDate && date < this.options.minDate) {
+    return true;
+  }
+  if (this.options.maxDate && date > this.options.maxDate) {
+    return true;
+  }
+}
+```
+
+2. **Specific Dates**
+
+```javascript
+if (this.options.disabledDates.length > 0) {
+  return this.options.disabledDates.some((disabledDate) => this.isSameDay(date, disabledDate));
+}
+```
+
+3. **Date Ranges**
+
+```javascript
+if (this.options.disabledDateRanges.length > 0) {
+  return this.options.disabledDateRanges.some((range) => {
+    return date >= range.start && date <= range.end;
+  });
+}
+```
+
+4. **Days of Week**
+
+```javascript
+if (this.options.disableWeekends) {
+  const day = date.getDay();
+  return day === 0 || day === 6; // Sunday or Saturday
+}
+```
+
+5. **Custom Function**
+
+```javascript
+if (this.options.disableFunction) {
+  return this.options.disableFunction(date);
+}
+```
+
+6. **Whitelist Mode**
+
+```javascript
+if (this.options.enabledDates.length > 0) {
+  return !this.options.enabledDates.some((enabledDate) => this.isSameDay(date, enabledDate));
+}
+```
+
+---
 
 ## Rendering Pipeline
 
 ### Render Flow
 
-```javascript
-render() {
-    this.renderHeader();      // Month/year navigation
-    this.renderWeekdays();    // Weekday headers
-    this.renderDays();        // Calendar grid
-    this.updateInputValue();  // Input field value
-    this.updatePosition();    // Popup positioning
-    return this;
-}
+```
+User Action
+    ↓
+Event Handler
+    ↓
+State Update
+    ↓
+render() / rerender()
+    ↓
+┌─────────────────┐
+│  renderHeader() │ → Month/Year display
+├─────────────────┤
+│renderWeekdays() │ → Day name headers
+├─────────────────┤
+│  renderDays()   │ → Calendar grid
+│       ↓         │
+│generateDaysHTML()│ → HTML generation
+│       ↓         │
+│ getDayClasses() │ → CSS class logic
+└─────────────────┘
+    ↓
+DOM Update (innerHTML)
+    ↓
+updatePosition()
+    ↓
+Trigger Hooks
 ```
 
 ### Day Rendering Logic
 
 ```javascript
 generateDaysHTML() {
-    // 1. Calculate calendar boundaries
-    const firstDay = new Date(this.state.currentYear, this.state.currentMonth, 1);
-    const lastDay = new Date(this.state.currentYear, this.state.currentMonth + 1, 0);
-    
-    // 2. Adjust for first day of week
-    const startDate = new Date(firstDay);
-    const dayOfWeek = (firstDay.getDay() - this.options.firstDayOfWeek + 7) % 7;
-    startDate.setDate(startDate.getDate() - dayOfWeek);
-    
-    // 3. Generate 6 weeks (42 days)
-    let html = '';
-    let currentDate = new Date(startDate);
-    
-    for (let week = 0; week < 6; week++) {
-        html += '<div class="datepicker-week">';
-        for (let day = 0; day < 7; day++) {
-            html += this.generateDayHTML(currentDate);
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-        html += '</div>';
-    }
-    
-    return html;
+  const year = this.state.currentYear;
+  const month = this.state.currentMonth;
+
+  // Get calendar grid data
+  const firstDay = this.getFirstDayOfMonth(year, month);
+  const daysInMonth = this.getDaysInMonth(year, month);
+  const daysInPrevMonth = this.getDaysInMonth(
+    month === 0 ? year - 1 : year,
+    month === 0 ? 11 : month - 1
+  );
+
+  let html = '';
+  let dayCount = 1;
+  let nextMonthDay = 1;
+
+  // Generate 6 weeks (42 days)
+  for (let i = 0; i < 42; i++) {
+    const date = this.getDateForCell(i, year, month);
+    const classes = this.getDayClasses(date);
+    const disabled = this.isDateDisabled(date);
+
+    html += `
+      <button
+        type="button"
+        class="${classes}"
+        data-date="${date.toISOString()}"
+        ${disabled ? 'disabled' : ''}
+      >
+        ${date.getDate()}
+      </button>
+    `;
+  }
+
+  return html;
 }
 ```
 
-### CSS Class Generation
+---
+
+## API Design
+
+### Method Naming Convention
+
+- **get/set** - Getters and setters (e.g., `getDate()`, `setDate()`)
+- **enable/disable** - Toggle features (e.g., `enableMonthDropdown()`)
+- **add/remove** - Modify collections (e.g., `addDisabledDates()`)
+- **clear** - Reset to default (e.g., `clearDisabledDates()`)
+- **handle** - Event handlers (e.g., `handleDateSelect()`)
+- **render** - UI updates (e.g., `renderDays()`)
+- **update** - State/UI sync (e.g., `updatePosition()`)
+
+### Chainable Methods
+
+Some methods return `this` for chaining:
 
 ```javascript
+picker
+  .setMinDate(new Date())
+  .setMaxDate(new Date(2024, 11, 31))
+  .setDisableWeekends(true)
+  .open();
+```
+
+---
+
+## Build System
+
+### Build Configuration (package.json)
+
+```json
+{
+  "scripts": {
+    "build": "pnpm run build:js && pnpm run build:css",
+    "watch": "rollup -c rollup.config.js --w",
+    "build:js": "rollup -c rollup.config.js",
+    "build:css": "pnpm run build:css:main && pnpm run build:css:min",
+    "build:css:main": "postcss src/datelite.css -o dist/datelite.css",
+    "build:css:min": "postcss src/datelite.css -o dist/datelite.min.css --env production"
+  }
+}
+```
+
+### Rollup Configuration
+
+The build process:
+
+1. Bundles JavaScript (ES6 → ES5)
+2. Minifies code
+3. Processes CSS (autoprefixer, minification)
+4. Generates source maps
+
+---
+
+## Contributing Guidelines
+
+### Code Style
+
+1. **Use ES6+ features**
+   - Arrow functions
+   - Template literals
+   - Destructuring
+   - Spread operator
+
+2. **Naming conventions**
+   - camelCase for variables and methods
+   - PascalCase for classes
+   - UPPER_CASE for constants
+
+3. **Comments**
+   - JSDoc for public methods
+   - Inline comments for complex logic
+   - Section headers for organization
+
+### Adding New Features
+
+1. **Update options** in constructor
+2. **Add state** if needed
+3. **Create methods** for functionality
+4. **Update rendering** if UI changes
+5. **Add CSS** for styling
+6. **Write tests** (if test suite exists)
+7. **Update documentation**
+
+### Example: Adding a New Option
+
+```javascript
+// 1. Add to default options
+this.options = {
+  ...
+  highlightWeekends: false,  // New option
+  ...
+};
+
+// 2. Use in getDayClasses()
 getDayClasses(date) {
-    const classes = [];
-    
-    // State-based classes
-    if (this.isSameDay(date, new Date())) classes.push('today');
-    if (this.isDateSelected(date)) classes.push('selected');
-    if (this.isDateDisabled(date)) classes.push('disabled-custom');
-    
-    // Mode-specific classes
-    if (this.options.mode === 'range') {
-        if (this.isDateInRange(date)) classes.push('in-range');
-        if (this.state.startDate && this.isSameDay(date, this.state.startDate)) {
-            classes.push('range-start');
-        }
+  const classes = ['datepicker-day'];
+
+  if (this.options.highlightWeekends) {
+    const day = date.getDay();
+    if (day === 0 || day === 6) {
+      classes.push('weekend');
     }
-    
-    return classes.join(' ');
+  }
+
+  return classes.join(' ');
+}
+
+// 3. Add CSS
+.datepicker-day.weekend {
+  background-color: var(--dp-bg-muted);
 }
 ```
 
-## Configuration System
+---
 
-### Option Categories
+## Performance Considerations
 
-```javascript
-this.defaultOptions = {
-    // Core Options
-    mode: 'single',           // 'single', 'range', 'multiple'
-    format: 'Y-m-d',         // Date format string
-    locale: 'en',            // Localization
-    
-    // UI Options
-    inline: false,           // Inline vs popup
-    theme: 'default',        // Theme selection
-    position: 'auto',        // Popup positioning
-    
-    // Behavior Options
-    closeOnSelect: true,     // Auto-close behavior
-    allowInput: true,        // Manual input allowed
-    clickOpens: true,        // Click to open
-    
-    // Date Constraints
-    minDate: null,           // Minimum selectable date
-    maxDate: null,           // Maximum selectable date
-    disabledDates: [],       // Specific disabled dates
-    
-    // Feature Toggles
-    enableTime: false,       // Time picker
-    enableMonthDropdown: true, // Month dropdown
-    enableYearDropdown: true,  // Year dropdown
-    showIcon: true,          // Input icon
-    confirmRange: false,     // Range confirmation
-    
-    // Callbacks
-    onChange: null,          // Date change callback
-    onOpen: null,           // Open callback
-    onClose: null           // Close callback
-};
-```
+### Optimization Techniques
 
-### Option Processing
+1. **Event Delegation**
+   - Single listener on calendar container
+   - Uses `event.target` to determine clicked element
+
+2. **Debounced Position Updates**
+   - Position recalculated on scroll/resize
+   - Debounced to prevent excessive calculations
+
+3. **Minimal Re-renders**
+   - Only affected elements updated
+   - Batch DOM updates with `innerHTML`
+
+4. **CSS Transitions**
+   - Hardware-accelerated transforms
+   - Efficient animations
+
+### Memory Management
 
 ```javascript
-// Constructor processes options in this order:
-constructor(element, options = {}) {
-    // 1. Merge with defaults
-    this.options = { ...this.defaultOptions, ...options };
-    
-    // 2. Apply mode-specific adjustments
-    if (this.options.mode === 'range' && this.options.confirmRange) {
-        this.options.closeOnSelect = false;
-    }
-    
-    // 3. Validate and sanitize
-    this.validateOptions();
+destroy() {
+  // Remove event listeners
+  document.removeEventListener('click', this.handleDocumentClick);
+  window.removeEventListener('resize', this.updatePosition);
+
+  // Remove DOM elements
+  if (this.dom.calendar && this.dom.calendar.parentNode) {
+    this.dom.calendar.parentNode.removeChild(this.dom.calendar);
+  }
+
+  // Clear references
+  this.dom = null;
+  this.state = null;
+  this.options = null;
 }
 ```
 
-## API Methods
+---
 
-### Method Categories
+## Testing Strategy
 
-#### Core Methods
-```javascript
-init()          // Initialize the datepicker
-render()        // Render the calendar
-rerender()      // Re-render with current state
-destroy()       // Clean up and remove
-```
+### Manual Testing Checklist
 
-#### Visibility Control
-```javascript
-open()          // Show the datepicker
-close()         // Hide the datepicker
-toggle()        // Toggle visibility
-```
+- [ ] Single date selection
+- [ ] Range date selection
+- [ ] Multiple date selection
+- [ ] Time picker functionality
+- [ ] Keyboard navigation
+- [ ] Mobile responsiveness
+- [ ] Date restrictions
+- [ ] Position calculations
+- [ ] Theme switching
+- [ ] Locale support
 
-#### Date Management
-```javascript
-setDate(date)                    // Set selected date(s)
-getDate()                       // Get selected date(s)
-setStartEndDate(start, end)     // Set range dates
-setMinDate(date)                // Set minimum date
-setMaxDate(date)                // Set maximum date
-```
+### Browser Compatibility
 
-#### Feature Control
-```javascript
-// Icon control
-showIcon()
-hideIcon()
-updateIcon(customIcon)
-setIconPosition(position)
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
-// Dropdown control
-enableMonthDropdown()
-disableMonthDropdown()
-enableYearDropdown()
-disableYearDropdown()
+---
 
-// Date blocking
-addDisabledDates(dates)
-removeDisabledDates(dates)
-setDisableWeekends(enabled)
-```
+## Debugging Tips
 
-### Method Implementation Pattern
-
-```javascript
-// Standard API method pattern
-methodName(param1, param2) {
-    // 1. Validate parameters
-    if (!param1) return this;
-    
-    // 2. Update internal state/options
-    this.options.someOption = param1;
-    this.state.someState = param2;
-    
-    // 3. Update DOM if needed
-    if (this.dom.calendar) {
-        this.rerender();
-    }
-    
-    // 4. Return this for chaining
-    return this;
-}
-```
-
-## Styling Architecture
-
-### CSS Organization
-
-```css
-/* 1. Base Container Styles */
-.datepicker-container { /* ... */ }
-
-/* 2. Component Styles */
-.datepicker-header { /* ... */ }
-.datepicker-body { /* ... */ }
-.datepicker-footer { /* ... */ }
-
-/* 3. Interactive Elements */
-.datepicker-day { /* ... */ }
-.datepicker-day:hover { /* ... */ }
-.datepicker-day:disabled { /* ... */ }
-
-/* 4. State Classes */
-.datepicker-day.today { /* ... */ }
-.datepicker-day.selected { /* ... */ }
-.datepicker-day.in-range { /* ... */ }
-
-/* 5. Theme Variations */
-.datepicker-container.dark { /* ... */ }
-.datepicker-container.minimal { /* ... */ }
-
-/* 6. Responsive Design */
-@media (max-width: 480px) { /* ... */ }
-```
-
-### CSS Class Naming Convention
-
-- **Component**: `.datepicker-[component]` (e.g., `.datepicker-header`)
-- **Element**: `.datepicker-[component]-[element]` (e.g., `.datepicker-month-btn`)
-- **State**: `.datepicker-[element].[state]` (e.g., `.datepicker-day.selected`)
-- **Modifier**: `.datepicker-[component].[modifier]` (e.g., `.datepicker-container.dark`)
-
-### Theme System
-
-```javascript
-// Theme switching
-switchTheme(theme) {
-    document.querySelectorAll('.datepicker-container').forEach(container => {
-        container.className = container.className.replace(/\b(default|dark|minimal)\b/g, '');
-        container.classList.add(theme);
-    });
-}
-```
-
-## Extension Points
-
-### 1. Custom Locales
-
-```javascript
-// Add new locale
-this.locales.es = {
-    weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-    months: ['Enero', 'Febrero', 'Marzo', /* ... */],
-    monthsShort: ['Ene', 'Feb', 'Mar', /* ... */]
-};
-```
-
-### 2. Custom Disable Functions
+### Enable Debug Mode
 
 ```javascript
 const picker = new DatePicker('#input', {
-    disableFunction: function(date) {
-        // Custom logic - e.g., disable company holidays
-        const holidays = getCompanyHolidays();
-        return holidays.some(holiday => isSameDay(date, holiday));
-    }
+  onReady: () => console.log('Ready'),
+  onOpen: () => console.log('Opened'),
+  onChange: (date) => console.log('Changed:', date),
+  onClose: () => console.log('Closed'),
 });
+
+// Access internals
+console.log(picker.state);
+console.log(picker.options);
+console.log(picker.dom);
 ```
-
-### 3. Custom Themes
-
-```css
-.datepicker-container.corporate {
-    --primary-color: #0066cc;
-    --background-color: #ffffff;
-    --border-color: #cccccc;
-    --text-color: #333333;
-}
-
-.datepicker-container.corporate .datepicker-day.selected {
-    background-color: var(--primary-color);
-    color: white;
-}
-```
-
-### 4. Plugin Architecture
-
-```javascript
-// Example plugin structure
-DatePicker.prototype.addPlugin = function(plugin) {
-    if (typeof plugin.init === 'function') {
-        plugin.init.call(this);
-    }
-    return this;
-};
-
-// Usage
-const myPicker = new DatePicker('#input');
-myPicker.addPlugin(new HolidayPlugin());
-```
-
-## Best Practices
-
-### 1. Performance Optimization
-
-```javascript
-// ✅ Good: Batch DOM updates
-updateMultipleDates(dates) {
-    // Update all state first
-    dates.forEach(date => this.state.selectedDates.push(date));
-    
-    // Single re-render at the end
-    this.rerender();
-}
-
-// ❌ Bad: Multiple re-renders
-updateMultipleDates(dates) {
-    dates.forEach(date => {
-        this.state.selectedDates.push(date);
-        this.rerender(); // Expensive!
-    });
-}
-```
-
-### 2. Memory Management
-
-```javascript
-// Always clean up in destroy()
-destroy() {
-    // Remove event listeners
-    document.removeEventListener('click', this.handleDocumentClick);
-    
-    // Clear DOM references
-    this.dom = {};
-    
-    // Clear callbacks
-    this.callbacks = {};
-    
-    return this;
-}
-```
-
-### 3. Error Handling
-
-```javascript
-// Validate inputs
-setDate(date) {
-    try {
-        const parsedDate = this.parseDate(date);
-        if (!parsedDate) {
-            console.warn('DatePicker: Invalid date provided');
-            return this;
-        }
-        // ... rest of method
-    } catch (error) {
-        console.error('DatePicker: Error setting date', error);
-        return this;
-    }
-}
-```
-
-### 4. Accessibility
-
-```javascript
-// Always include ARIA attributes
-generateDayHTML(date) {
-    const isDisabled = this.isDateDisabled(date);
-    const isSelected = this.isDateSelected(date);
-    
-    return `
-        <button type="button" 
-                class="datepicker-day ${this.getDayClasses(date)}"
-                data-date="${this.formatDate(date, 'Y-m-d')}"
-                aria-label="${this.formatDate(date, 'F j, Y')}"
-                aria-selected="${isSelected}"
-                ${isDisabled ? 'disabled aria-disabled="true"' : ''}>
-            ${date.getDate()}
-        </button>
-    `;
-}
-```
-
-## Troubleshooting
 
 ### Common Issues
 
-#### 1. DatePicker Not Opening
-```javascript
-// Check element exists
-if (!this.element) {
-    console.error('DatePicker: Element not found');
-}
+1. **Calendar not appearing**
+   - Check z-index conflicts
+   - Verify `appendTo` target exists
+   - Check CSS is loaded
 
-// Check clickOpens option
-if (!this.options.clickOpens) {
-    // Manually call open()
-    picker.open();
-}
-```
+2. **Position incorrect**
+   - Verify input has layout (not `display: none`)
+   - Check for CSS transforms on parents
+   - Review `position` option
 
-#### 2. Dates Not Updating
-```javascript
-// Ensure onChange callback is set
-const picker = new DatePicker('#input', {
-    onChange: function(date) {
-        console.log('Date changed:', date);
-    }
-});
+3. **Dates not selectable**
+   - Check `isDateDisabled()` logic
+   - Verify min/max dates
+   - Review custom disable function
 
-// Check if date is disabled
-if (picker.isDateDisabled(someDate)) {
-    console.log('Date is disabled');
-}
-```
+---
 
-#### 3. Styling Issues
-```css
-/* Ensure CSS is loaded */
-@import url('src/datelite.css');
+## Future Enhancements
 
-/* Check z-index for popup */
-.datepicker-popup {
-    z-index: 9999 !important;
-}
-```
+### Planned Features
 
-#### 4. Memory Leaks
-```javascript
-// Always destroy when removing from DOM
-picker.destroy();
+1. **Accessibility improvements**
+   - Better screen reader support
+   - Enhanced keyboard navigation
+   - Focus management
 
-// Remove references
-picker = null;
-```
+2. **Performance optimizations**
+   - Virtual scrolling for year dropdown
+   - Lazy rendering for large date ranges
 
-### Debugging Tools
+3. **Additional features**
+   - Week selection mode
+   - Quarter selection
+   - Preset date ranges
+   - Custom cell rendering
 
-```javascript
-// Enable debug mode
-const picker = new DatePicker('#input', {
-    debug: true, // Add this option
-    onChange: function(date) {
-        console.log('Debug: Date changed', {
-            date: date,
-            state: this.state,
-            options: this.options
-        });
-    }
-});
+---
 
-// Inspect internal state
-console.log('Current state:', picker.state);
-console.log('Current options:', picker.options);
-console.log('DOM references:', picker.dom);
-```
+## Resources
 
-### Performance Monitoring
+- **Source Code**: `src/DatePicker.js`, `src/datelite.css`
+- **Examples**: `examples/` directory
+- **User Documentation**: `examples/documentation.html`
+- **Build Config**: `rollup.config.js`, `postcss.config.js`
 
-```javascript
-// Monitor render performance
-const originalRender = DatePicker.prototype.render;
-DatePicker.prototype.render = function() {
-    const start = performance.now();
-    const result = originalRender.call(this);
-    const end = performance.now();
-    console.log(`Render took ${end - start} milliseconds`);
-    return result;
-};
-```
+---
 
-## Conclusion
-
-This DatePicker is designed to be:
-- **Flexible**: Extensive configuration options
-- **Extensible**: Clear extension points for customization
-- **Maintainable**: Well-structured, documented code
-- **Performant**: Efficient rendering and event handling
-- **Accessible**: Full keyboard and screen reader support
-
-For additional help or feature requests, refer to the example implementations in `example.html` or create custom extensions using the patterns outlined in this guide.
+**Last Updated**: January 2026  
+**Version**: 1.0.0  
+**Maintainer**: DateLite Team

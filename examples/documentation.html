@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DateLite Documentation - Complete Guide</title>
+    <link rel="stylesheet" href="../src/datelite.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .code-block {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+      }
+
+      .nav-link {
+        transition: all 0.2s;
+      }
+
+      .nav-link:hover {
+        background-color: #f1f5f9;
+      }
+
+      .nav-link.active {
+        background-color: #eef2ff;
+        color: #3b82f6;
+        font-weight: 600;
+      }
+
+      .section {
+        scroll-margin-top: 100px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-bold text-gray-900">📅 DateLite</h1>
+            <span class="ml-3 text-sm text-gray-500">Documentation</span>
+          </div>
+          <nav class="hidden md:flex space-x-4">
+            <a href="#getting-started" class="text-gray-600 hover:text-gray-900">Getting Started</a>
+            <a href="#options" class="text-gray-600 hover:text-gray-900">Options</a>
+            <a href="#methods" class="text-gray-600 hover:text-gray-900">Methods</a>
+            <a href="#hooks" class="text-gray-600 hover:text-gray-900">Hooks</a>
+            <a href="#examples" class="text-gray-600 hover:text-gray-900">Examples</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Sidebar Navigation -->
+        <aside class="lg:w-64 flex-shrink-0">
+          <div class="sticky top-24 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <nav class="space-y-1">
+              <a href="#getting-started" class="nav-link block px-3 py-2 rounded-md text-sm">
+                Getting Started
+              </a>
+              <a href="#installation" class="nav-link block px-3 py-2 rounded-md text-sm pl-6">
+                Installation
+              </a>
+              <a href="#basic-usage" class="nav-link block px-3 py-2 rounded-md text-sm pl-6">
+                Basic Usage
+              </a>
+
+              <a href="#options" class="nav-link block px-3 py-2 rounded-md text-sm">
+                Configuration Options
+              </a>
+              <a href="#mode-options" class="nav-link block px-3 py-2 rounded-md text-sm pl-6">
+                Mode Options
+              </a>
+              <a href="#display-options" class="nav-link block px-3 py-2 rounded-md text-sm pl-6">
+                Display Options
+              </a>
+              <a href="#position-options" class="nav-link block px-3 py-2 rounded-md text-sm pl-6">
+                Position Options
+              </a>
+              <a href="#date-restrictions" class="nav-link block px-3 py-2 rounded-md text-sm pl-6">
+                Date Restrictions
+              </a>
+
+              <a href="#methods" class="nav-link block px-3 py-2 rounded-md text-sm"> Methods </a>
+
+              <a href="#hooks" class="nav-link block px-3 py-2 rounded-md text-sm"> Event Hooks </a>
+
+              <a href="#positioning" class="nav-link block px-3 py-2 rounded-md text-sm">
+                Positioning Guide
+              </a>
+
+              <a href="#examples" class="nav-link block px-3 py-2 rounded-md text-sm"> Examples </a>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0">
+          <!-- Getting Started -->
+          <section id="getting-started" class="section mb-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+              <h2 class="text-3xl font-bold text-gray-900 mb-4">Getting Started</h2>
+              <p class="text-gray-600 mb-6">
+                DateLite is a modern, lightweight, and highly customizable date picker component
+                built with vanilla JavaScript.
+              </p>
+
+              <div id="installation" class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Installation</h3>
+
+                <h4 class="text-lg font-medium text-gray-900 mb-2">Via NPM</h4>
+                <div class="code-block mb-4">npm install datelite</div>
+
+                <h4 class="text-lg font-medium text-gray-900 mb-2">Via CDN</h4>
+                <div class="code-block mb-4">
+                  &lt;link rel="stylesheet"
+                  href="https://cdn.jsdelivr.net/npm/datelite/dist/datelite.css"&gt; &lt;script
+                  src="https://cdn.jsdelivr.net/npm/datelite/dist/datelite.js"&gt;&lt;/script&gt;
+                </div>
+
+                <h4 class="text-lg font-medium text-gray-900 mb-2">Manual Download</h4>
+                <p class="text-gray-600 mb-2">
+                  Download the files and include them in your project:
+                </p>
+                <div class="code-block">
+                  &lt;link rel="stylesheet" href="path/to/datelite.css"&gt; &lt;script
+                  src="path/to/datelite.js"&gt;&lt;/script&gt;
+                </div>
+              </div>
+
+              <div id="basic-usage" class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Basic Usage</h3>
+                <p class="text-gray-600 mb-4">
+                  Create a simple date picker with just a few lines of code:
+                </p>
+
+                <div class="code-block mb-4">
+                  &lt;input type="text" id="datepicker" placeholder="Select a date"&gt;
+                  &lt;script&gt; const picker = new DatePicker('#datepicker', { mode: 'single',
+                  format: 'Y-m-d' }); &lt;/script&gt;
+                </div>
+
+                <div class="mt-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Try it:</label>
+                  <input
+                    type="text"
+                    id="basic-demo"
+                    placeholder="Select a date"
+                    class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Options -->
+          <section id="options" class="section mb-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">Configuration Options</h2>
+
+              <div id="mode-options" class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Mode Options</h3>
+
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Option
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Type
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Default
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Description
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">mode</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">string</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">'single'</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Selection mode: 'single', 'range', or 'multiple'
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">inline</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">false</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Display calendar inline (always visible)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">enableTime</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">false</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Enable time selection</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">time_24hr</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">true</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Use 24-hour time format</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="mt-4 code-block">
+                  const picker = new DatePicker('#input', { mode: 'range', // Select date range
+                  enableTime: true, // Include time selection time_24hr: false // Use 12-hour format
+                  });
+                </div>
+              </div>
+
+              <div id="display-options" class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Display Options</h3>
+
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Option
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Type
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Default
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Description
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">format</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">string</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">'Y-m-d'</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Date format (Y-m-d, m/d/Y, etc.)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">theme</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">string</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">'default'</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Theme: 'default', 'dark', 'minimal'
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">showWeekNumbers</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">false</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Display week numbers</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">closeOnSelect</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">true</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Close calendar after selection
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="position-options" class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Position Options</h3>
+
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Option
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Type
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Default
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Description
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">position</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">string</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">'auto'</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          'auto', 'top', 'bottom', 'left', 'right'
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">appendTo</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">string/element</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">'body'</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Element to append calendar to
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">positionX</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">number</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">null</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Fixed X position (pixels from left)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">positionY</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">number</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">null</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Fixed Y position (pixels from top)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">offsetX</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">number</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">0</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          X offset from calculated position
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">offsetY</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">number</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">0</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Y offset from calculated position
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="date-restrictions" class="mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Date Restrictions</h3>
+
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Option
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Type
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Default
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                          Description
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">minDate</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">Date/string</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">null</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Minimum selectable date</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">maxDate</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">Date/string</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">null</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Maximum selectable date</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">disableWeekends</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">false</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Disable weekend dates</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">blockPastDates</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">boolean</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">false</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Disable past dates</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">disabledDates</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">Array</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">[]</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Array of specific dates to disable
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">enabledDates</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">Array</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">[]</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">Only allow specific dates</td>
+                      </tr>
+                      <tr>
+                        <td class="px-6 py-4 font-mono text-sm text-blue-600">disableFunction</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">Function</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">null</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">
+                          Custom function to disable dates
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="mt-4 code-block">
+                  const picker = new DatePicker('#input', { minDate: new Date(), // Today onwards
+                  maxDate: '2024-12-31', // Until end of year disableWeekends: true, // No weekends
+                  disabledDates: [ // Specific dates '2024-12-25', '2024-01-01' ], disableFunction:
+                  (date) => { // Custom logic return date.getDay() === 5; // Disable Fridays } });
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Methods -->
+          <section id="methods" class="section mb-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">Methods</h2>
+
+              <div class="space-y-6">
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">open()</h4>
+                  <p class="text-gray-600 mb-2">Opens the date picker calendar.</p>
+                  <div class="code-block">picker.open();</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">close()</h4>
+                  <p class="text-gray-600 mb-2">Closes the date picker calendar.</p>
+                  <div class="code-block">picker.close();</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">toggle()</h4>
+                  <p class="text-gray-600 mb-2">Toggles the calendar open/closed state.</p>
+                  <div class="code-block">picker.toggle();</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">setDate(date)</h4>
+                  <p class="text-gray-600 mb-2">Programmatically set the selected date.</p>
+                  <div class="code-block">
+                    picker.setDate(new Date()); picker.setDate('2024-12-25');
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">getDate()</h4>
+                  <p class="text-gray-600 mb-2">Get the currently selected date(s).</p>
+                  <div class="code-block">const selectedDate = picker.getDate();</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">clear()</h4>
+                  <p class="text-gray-600 mb-2">Clear the selected date(s).</p>
+                  <div class="code-block">picker.clear();</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">destroy()</h4>
+                  <p class="text-gray-600 mb-2">
+                    Destroy the date picker instance and remove all event listeners.
+                  </p>
+                  <div class="code-block">picker.destroy();</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">
+                    setDisableWeekends(boolean)
+                  </h4>
+                  <p class="text-gray-600 mb-2">Dynamically enable/disable weekends.</p>
+                  <div class="code-block">picker.setDisableWeekends(true);</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">
+                    setBlockPastDates(boolean)
+                  </h4>
+                  <p class="text-gray-600 mb-2">Dynamically enable/disable past dates.</p>
+                  <div class="code-block">picker.setBlockPastDates(true);</div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">addDisabledDates(dates)</h4>
+                  <p class="text-gray-600 mb-2">Add dates to the disabled dates list.</p>
+                  <div class="code-block">
+                    picker.addDisabledDates(['2024-12-25', '2024-01-01']);
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">clearDisabledDates()</h4>
+                  <p class="text-gray-600 mb-2">Clear all disabled dates.</p>
+                  <div class="code-block">picker.clearDisabledDates();</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Hooks -->
+          <section id="hooks" class="section mb-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">Event Hooks</h2>
+
+              <div class="space-y-6">
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">onReady</h4>
+                  <p class="text-gray-600 mb-2">
+                    Called when the date picker is initialized and ready.
+                  </p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { onReady: function() {
+                    console.log('DatePicker is ready!'); } });
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">onChange</h4>
+                  <p class="text-gray-600 mb-2">Called when a date is selected or changed.</p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { onChange: function(selectedDate) {
+                    console.log('Selected:', selectedDate); } });
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">onOpen</h4>
+                  <p class="text-gray-600 mb-2">Called when the calendar is opened.</p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { onOpen: function() {
+                    console.log('Calendar opened'); } });
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">onClose</h4>
+                  <p class="text-gray-600 mb-2">Called when the calendar is closed.</p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { onClose: function() {
+                    console.log('Calendar closed'); } });
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">onMonthChange</h4>
+                  <p class="text-gray-600 mb-2">Called when the displayed month changes.</p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { onMonthChange: function(year, month) {
+                    console.log('Month changed to:', year, month); } });
+                  </div>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">onYearChange</h4>
+                  <p class="text-gray-600 mb-2">Called when the displayed year changes.</p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { onYearChange: function(year) {
+                    console.log('Year changed to:', year); } });
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Positioning Guide -->
+          <section id="positioning" class="section mb-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">Positioning Guide</h2>
+
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                    Auto Positioning (Default)
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    The calendar automatically positions itself to stay within the viewport.
+                  </p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { position: 'auto' // Default behavior
+                    });
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Fixed Position</h3>
+                  <p class="text-gray-600 mb-4">
+                    Position the calendar at specific coordinates on the page.
+                  </p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { positionX: 100, // 100px from left
+                    positionY: 200 // 200px from top });
+                  </div>
+                  <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Try it (Fixed at 300px, 300px):</label
+                    >
+                    <input
+                      type="text"
+                      id="fixed-position-demo"
+                      placeholder="Click to see fixed position"
+                      class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                    Relative Positioning with Offset
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    Adjust the position relative to the input element.
+                  </p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { position: 'bottom', offsetX: 10, //
+                    10px right offset offsetY: 5 // 5px down offset });
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Append to Custom Element</h3>
+                  <p class="text-gray-600 mb-4">
+                    Append the calendar to a specific container instead of body.
+                  </p>
+                  <div class="code-block">
+                    const picker = new DatePicker('#input', { appendTo: '#custom-container' });
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Position Options</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                      <h4 class="font-semibold text-gray-900 mb-2">Top</h4>
+                      <p class="text-sm text-gray-600">Calendar appears above the input</p>
+                      <div class="code-block mt-2 text-xs">position: 'top'</div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                      <h4 class="font-semibold text-gray-900 mb-2">Bottom</h4>
+                      <p class="text-sm text-gray-600">Calendar appears below the input</p>
+                      <div class="code-block mt-2 text-xs">position: 'bottom'</div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                      <h4 class="font-semibold text-gray-900 mb-2">Left</h4>
+                      <p class="text-sm text-gray-600">Calendar appears to the left</p>
+                      <div class="code-block mt-2 text-xs">position: 'left'</div>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                      <h4 class="font-semibold text-gray-900 mb-2">Right</h4>
+                      <p class="text-sm text-gray-600">Calendar appears to the right</p>
+                      <div class="code-block mt-2 text-xs">position: 'right'</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Examples -->
+          <section id="examples" class="section mb-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">Complete Examples</h2>
+
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Date Range Picker</h3>
+                  <div class="code-block mb-4">
+                    const rangePicker = new DatePicker('#date-range', { mode: 'range', format:
+                    'Y-m-d', onChange: function(dateRange) { if (dateRange.start && dateRange.end) {
+                    console.log('From:', dateRange.start); console.log('To:', dateRange.end); } }
+                    });
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Try it:</label>
+                    <input
+                      type="text"
+                      id="range-demo"
+                      placeholder="Select date range"
+                      class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md"
+                    />
+                    <div id="range-output" class="mt-2 text-sm text-gray-600"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Date & Time Picker</h3>
+                  <div class="code-block mb-4">
+                    const datetimePicker = new DatePicker('#datetime', { mode: 'single', enableTime:
+                    true, time_24hr: false, format: 'Y-m-d h:i A' });
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Try it:</label>
+                    <input
+                      type="text"
+                      id="datetime-demo"
+                      placeholder="Select date and time"
+                      class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Inline Calendar</h3>
+                  <div class="code-block mb-4">
+                    const inlinePicker = new DatePicker('#inline-calendar', { inline: true, mode:
+                    'single' });
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Try it:</label>
+                    <div id="inline-demo" class="inline-block"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-4">Restricted Dates</h3>
+                  <div class="code-block mb-4">
+                    const restrictedPicker = new DatePicker('#restricted', { minDate: new Date(),
+                    maxDate: new Date(new Date().setDate(new Date().getDate() + 30)),
+                    disableWeekends: true, disabledDates: ['2024-12-25', '2024-01-01'] });
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Try it (Next 30 days, no weekends):</label
+                    >
+                    <input
+                      type="text"
+                      id="restricted-demo"
+                      placeholder="Select date"
+                      class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center text-gray-500 text-sm">
+          <p>DateLite - Modern Date Picker Component</p>
+          <p class="mt-2">
+            <a href="index.html" class="text-blue-600 hover:text-blue-800">View Examples</a> •
+            <a href="https://github.com" class="text-blue-600 hover:text-blue-800">GitHub</a> •
+            <a href="https://npmjs.com" class="text-blue-600 hover:text-blue-800">NPM</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../dist/datelite.js"></script>
+    <script>
+      // Active navigation highlighting
+      const navLinks = document.querySelectorAll('.nav-link');
+      const sections = document.querySelectorAll('.section');
+
+      function highlightNav() {
+        let current = '';
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (window.pageYOffset >= sectionTop - 150) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', highlightNav);
+
+      // Demo pickers
+      const basicPicker = new DatePicker('#basic-demo', {
+        mode: 'single',
+        format: 'Y-m-d',
+      });
+
+      const fixedPositionPicker = new DatePicker('#fixed-position-demo', {
+        mode: 'single',
+        positionX: 300,
+        positionY: 300,
+      });
+
+      const rangePicker = new DatePicker('#range-demo', {
+        mode: 'range',
+        format: 'Y-m-d',
+        onChange: function (dateRange) {
+          const output = document.getElementById('range-output');
+          if (dateRange.start && dateRange.end) {
+            output.textContent = `Selected: ${dateRange.start.toDateString()} to ${dateRange.end.toDateString()}`;
+          } else if (dateRange.start) {
+            output.textContent = `Start: ${dateRange.start.toDateString()} (select end date)`;
+          } else {
+            output.textContent = '';
+          }
+        },
+      });
+
+      const datetimePicker = new DatePicker('#datetime-demo', {
+        mode: 'single',
+        enableTime: true,
+        time_24hr: false,
+        format: 'Y-m-d h:i A',
+      });
+
+      const inlinePicker = new DatePicker('#inline-demo', {
+        inline: true,
+        mode: 'single',
+      });
+
+      const today = new Date();
+      const maxDate = new Date();
+      maxDate.setDate(today.getDate() + 30);
+
+      const restrictedPicker = new DatePicker('#restricted-demo', {
+        minDate: today,
+        maxDate: maxDate,
+        disableWeekends: true,
+        disabledDates: ['2024-12-25', '2024-01-01'],
+      });
+    </script>
+  </body>
+</html>

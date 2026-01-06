@@ -992,7 +992,7 @@ class DatePicker {
 
     if (target.classList.contains('datepicker-day') && !target.disabled) {
       const dateStr = target.dataset.date;
-      const date = new Date(dateStr);
+      const date = this.parseDate(dateStr);
       this.handleDateSelect(date);
     } else if (target.classList.contains('datepicker-prev-btn')) {
       this.handlePrevMonth();
@@ -1933,7 +1933,15 @@ class DatePicker {
    * Parse date string
    */
   parseDate(dateStr) {
-    // Simple date parsing - can be enhanced
+    // Handle null/undefined
+    if (!dateStr) return null;
+    
+    // Parse YYYY-MM-DD format as local date to avoid timezone shifts
+    const parts = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (parts) {
+      return new Date(parts[1], parts[2] - 1, parts[3]);
+    }
+    // Fallback for other formats
     const date = new Date(dateStr);
     return isNaN(date.getTime()) ? null : date;
   }

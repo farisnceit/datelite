@@ -49,6 +49,15 @@ describe('DatePicker Timezone Handling', () => {
       expect(invalidDate).toBeNull();
     });
 
+    test('should handle out-of-range dates gracefully', () => {
+      // JavaScript Date handles invalid dates by adjusting (e.g., month 13 becomes January of next year)
+      // This is expected behavior - the Date constructor normalizes values
+      const outOfRange = datePicker.parseDate('2024-13-40');
+      expect(outOfRange).toBeInstanceOf(Date);
+      // Date(2024, 12, 40) = Date(2025, 1, 9) - this is JavaScript's standard behavior
+      expect(outOfRange.getFullYear()).toBe(2025);
+    });
+
     test('should handle null or undefined input', () => {
       expect(datePicker.parseDate(null)).toBeNull();
       expect(datePicker.parseDate(undefined)).toBeNull();

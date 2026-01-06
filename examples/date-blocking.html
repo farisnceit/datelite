@@ -1,357 +1,360 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date Blocking Examples</title>
-    <link rel="stylesheet" href="../src/datelite.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Blocking Examples - DateLite</title>
+    <link rel="stylesheet" href="../src/datelite.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+        background: #f8fafc;
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+      }
+
+      .header p {
+        font-size: 18px;
+        color: #64748b;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .example {
+        background: white;
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow:
+          0 1px 3px rgba(0, 0, 0, 0.08),
+          0 1px 2px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e2e8f0;
+      }
+
+      .example h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 14px;
+      }
+
+      .form-group input {
+        width: 100%;
+        height: 40px;
+        border-radius: 6px;
+        border: 1px solid #e2e8f0;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #1e293b;
+      }
+
+      .output {
+        margin-top: 14px;
+        padding: 14px;
+        background: #f8fafc;
+        border-radius: 8px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 13px;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+      }
+
+      .code {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 12px;
+        overflow-x: auto;
+        line-height: 1.6;
+      }
+
+      .controls {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .controls button {
+        padding: 10px 16px;
+        background: #6366f1;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .controls button:hover {
+        background: #4f46e5;
+        transform: translateY(-1px);
+      }
+
+      .controls button.secondary {
+        background: #64748b;
+      }
+
+      .controls button.secondary:hover {
+        background: #475569;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 32px;
         }
-        
-        .example {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #f9f9f9;
-        }
-        
-        .example h3 {
-            margin-top: 0;
-            color: #333;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        
-        .form-group input {
-            width: 100%;
-            max-width: 300px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .output {
-            margin-top: 10px;
-            padding: 10px;
-            background: #e9ecef;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 13px;
-        }
-        
-        .code {
-            background: #f1f3f4;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            overflow-x: auto;
-        }
-        
+
         .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+          grid-template-columns: 1fr;
         }
-        
-        .controls {
-            margin-top: 15px;
-        }
-        
-        .controls button {
-            margin-right: 10px;
-            margin-bottom: 10px;
-            padding: 8px 16px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .controls button:hover {
-            background: #0056b3;
-        }
-        
-        .controls button.secondary {
-            background: #6c757d;
-        }
+      }
     </style>
-</head>
-<body>
-    <h1>Date Blocking Examples</h1>
-    <p>Examples showing different ways to block or restrict date selection.</p>
-    
-    <div class="grid">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🚫 Date Blocking Examples</h1>
+        <p>Different ways to restrict and control date selection</p>
+      </div>
+
+      <div class="grid">
         <!-- Block Weekends -->
         <div class="example">
-            <h3>Block Weekends</h3>
-            <div class="form-group">
-                <label for="no-weekends">Business days only:</label>
-                <input type="text" id="no-weekends" placeholder="Weekdays only">
-            </div>
-            <div class="output" id="no-weekends-output">No date selected</div>
-            
-            <div class="code">
-const picker = new DatePicker('#no-weekends', {
-    disableWeekends: true,
-    onChange: function(date) {
-        console.log('Business day:', date);
-    }
-});
-            </div>
+          <h3>Block Weekends</h3>
+          <div class="form-group">
+            <label for="no-weekends">Business days only:</label>
+            <input type="text" id="no-weekends" placeholder="Weekdays only" />
+          </div>
+          <div class="output" id="no-weekends-output">No date selected</div>
+
+          <div class="code">disableWeekends: true</div>
         </div>
-        
+
         <!-- Block Past Dates -->
         <div class="example">
-            <h3>Block Past Dates</h3>
-            <div class="form-group">
-                <label for="future-only">Future dates only:</label>
-                <input type="text" id="future-only" placeholder="Today and future">
-            </div>
-            <div class="output" id="future-only-output">No date selected</div>
-            
-            <div class="code">
-const picker = new DatePicker('#future-only', {
-    blockPastDates: true,
-    onChange: function(date) {
-        console.log('Future date:', date);
-    }
-});
-            </div>
+          <h3>Block Past Dates</h3>
+          <div class="form-group">
+            <label for="future-only">Future dates only:</label>
+            <input type="text" id="future-only" placeholder="Today and future" />
+          </div>
+          <div class="output" id="future-only-output">No date selected</div>
+
+          <div class="code">blockPastDates: true</div>
         </div>
-        
+
         <!-- Block Specific Dates -->
         <div class="example">
-            <h3>Block Specific Dates</h3>
-            <div class="form-group">
-                <label for="no-holidays">Holidays blocked:</label>
-                <input type="text" id="no-holidays" placeholder="No holidays available">
-            </div>
-            <div class="output" id="no-holidays-output">No date selected</div>
-            
-            <div class="code">
-const holidays = [
-    '2024-12-25', // Christmas
-    '2024-01-01', // New Year
-    '2024-07-04'  // Independence Day
-];
+          <h3>Block Specific Dates</h3>
+          <div class="form-group">
+            <label for="no-holidays">Holidays blocked:</label>
+            <input type="text" id="no-holidays" placeholder="No holidays available" />
+          </div>
+          <div class="output" id="no-holidays-output">No date selected</div>
 
-const picker = new DatePicker('#no-holidays', {
-    disabledDates: holidays,
-    onChange: function(date) {
-        console.log('Non-holiday:', date);
-    }
-});
-            </div>
+          <div class="code">disabledDates: [dates...]</div>
         </div>
-        
+
         <!-- Block Date Ranges -->
         <div class="example">
-            <h3>Block Date Ranges</h3>
-            <div class="form-group">
-                <label for="no-vacation">Vacation periods blocked:</label>
-                <input type="text" id="no-vacation" placeholder="Available dates only">
-            </div>
-            <div class="output" id="no-vacation-output">No date selected</div>
-            
-            <div class="code">
-const picker = new DatePicker('#no-vacation', {
-    disabledDateRanges: [
-        { 
-            start: '2024-12-20', 
-            end: '2024-12-31' 
-        }, // Winter break
-        { 
-            start: '2024-07-01', 
-            end: '2024-07-15' 
-        }  // Summer vacation
-    ]
-});
-            </div>
+          <h3>Block Date Ranges</h3>
+          <div class="form-group">
+            <label for="no-vacation">Vacation periods blocked:</label>
+            <input type="text" id="no-vacation" placeholder="Available dates only" />
+          </div>
+          <div class="output" id="no-vacation-output">No date selected</div>
+
+          <div class="code">disabledDateRanges: [{...}]</div>
         </div>
-        
+
         <!-- Whitelist Dates -->
         <div class="example">
-            <h3>Only Specific Dates Allowed</h3>
-            <div class="form-group">
-                <label for="whitelist">Limited availability:</label>
-                <input type="text" id="whitelist" placeholder="Only certain dates">
-            </div>
-            <div class="output" id="whitelist-output">No date selected</div>
-            
-            <div class="code">
-const allowedDates = [
-    '2024-12-01',
-    '2024-12-05',
-    '2024-12-10',
-    '2024-12-15',
-    '2024-12-20'
-];
+          <h3>Only Specific Dates</h3>
+          <div class="form-group">
+            <label for="whitelist">Limited availability:</label>
+            <input type="text" id="whitelist" placeholder="Only certain dates" />
+          </div>
+          <div class="output" id="whitelist-output">No date selected</div>
 
-const picker = new DatePicker('#whitelist', {
-    enabledDates: allowedDates
-});
-            </div>
+          <div class="code">enabledDates: [dates...]</div>
         </div>
-        
+
         <!-- Custom Block Function -->
         <div class="example">
-            <h3>Custom Block Function</h3>
-            <div class="form-group">
-                <label for="custom-block">No Fridays allowed:</label>
-                <input type="text" id="custom-block" placeholder="Custom blocking logic">
-            </div>
-            <div class="output" id="custom-block-output">No date selected</div>
-            
-            <div class="code">
-const picker = new DatePicker('#custom-block', {
-    disableFunction: function(date) {
-        // Block all Fridays
-        return date.getDay() === 5;
-    },
-    onChange: function(date) {
-        console.log('Non-Friday:', date);
-    }
-});
-            </div>
+          <h3>Custom Block Function</h3>
+          <div class="form-group">
+            <label for="custom-block">No Fridays allowed:</label>
+            <input type="text" id="custom-block" placeholder="Custom blocking logic" />
+          </div>
+          <div class="output" id="custom-block-output">No date selected</div>
+
+          <div class="code">disableFunction: (date) => {...}</div>
         </div>
-    </div>
-    
-    <!-- Dynamic Control Example -->
-    <div class="example">
+      </div>
+
+      <!-- Dynamic Control Example -->
+      <div class="example">
         <h3>Dynamic Date Blocking Control</h3>
         <div class="form-group">
-            <label for="dynamic-control">Dynamic blocking demo:</label>
-            <input type="text" id="dynamic-control" placeholder="Use buttons to control blocking">
+          <label for="dynamic-control">Dynamic blocking demo:</label>
+          <input type="text" id="dynamic-control" placeholder="Use buttons to control blocking" />
         </div>
-        
+
         <div class="controls">
-            <button onclick="dynamicPicker.setDisableWeekends(true)">Block Weekends</button>
-            <button onclick="dynamicPicker.setDisableWeekends(false)">Allow Weekends</button>
-            <button onclick="dynamicPicker.setBlockPastDates(true)">Block Past</button>
-            <button onclick="dynamicPicker.setBlockPastDates(false)">Allow Past</button>
-            <button onclick="addHolidays()" class="secondary">Add Holidays</button>
-            <button onclick="dynamicPicker.clearDisabledDates()" class="secondary">Clear All</button>
+          <button onclick="dynamicPicker.setDisableWeekends(true)">Block Weekends</button>
+          <button onclick="dynamicPicker.setDisableWeekends(false)">Allow Weekends</button>
+          <button onclick="dynamicPicker.setBlockPastDates(true)">Block Past</button>
+          <button onclick="dynamicPicker.setBlockPastDates(false)">Allow Past</button>
+          <button onclick="addHolidays()" class="secondary">Add Holidays</button>
+          <button onclick="dynamicPicker.clearDisabledDates()" class="secondary">Clear All</button>
         </div>
-        
+
         <div class="output" id="dynamic-output">Use buttons to control date blocking</div>
-        
-        <div class="code">
-// Dynamic control methods
-picker.setDisableWeekends(true);
-picker.setBlockPastDates(true);
-picker.addDisabledDates(['2024-12-25']);
-picker.clearDisabledDates();
-        </div>
+      </div>
     </div>
 
-    <script src="../DatePicker.js"></script>
+    <script src="../dist/datelite.js"></script>
     <script>
-        // Block weekends
-        const noWeekendsPicker = new DatePicker('#no-weekends', {
-            disableWeekends: true,
-            onChange: function(date) {
-                document.getElementById('no-weekends-output').textContent = 
-                    date ? `Business day: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      // Block weekends
+      const noWeekendsPicker = new DatePicker('#no-weekends', {
+        disableWeekends: true,
+        onChange: function (date) {
+          document.getElementById('no-weekends-output').textContent = date
+            ? `Business day: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
 
-        // Block past dates
-        const futureOnlyPicker = new DatePicker('#future-only', {
-            blockPastDates: true,
-            onChange: function(date) {
-                document.getElementById('future-only-output').textContent = 
-                    date ? `Future date: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      // Block past dates
+      const futureOnlyPicker = new DatePicker('#future-only', {
+        blockPastDates: true,
+        onChange: function (date) {
+          document.getElementById('future-only-output').textContent = date
+            ? `Future date: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
 
-        // Block holidays
-        const holidays = [
-            new Date('2024-12-25'), // Christmas
-            new Date('2024-01-01'), // New Year
-            new Date('2024-07-04')  // Independence Day
-        ];
-        
-        const noHolidaysPicker = new DatePicker('#no-holidays', {
-            disabledDates: holidays,
-            onChange: function(date) {
-                document.getElementById('no-holidays-output').textContent = 
-                    date ? `Non-holiday: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      // Block holidays
+      const holidays = [
+        new Date('2024-12-25'), // Christmas
+        new Date('2024-01-01'), // New Year
+        new Date('2024-07-04'), // Independence Day
+      ];
 
-        // Block vacation periods
-        const noVacationPicker = new DatePicker('#no-vacation', {
-            disabledDateRanges: [
-                { start: new Date('2024-12-20'), end: new Date('2024-12-31') },
-                { start: new Date('2024-07-01'), end: new Date('2024-07-15') }
-            ],
-            onChange: function(date) {
-                document.getElementById('no-vacation-output').textContent = 
-                    date ? `Available: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      const noHolidaysPicker = new DatePicker('#no-holidays', {
+        disabledDates: holidays,
+        onChange: function (date) {
+          document.getElementById('no-holidays-output').textContent = date
+            ? `Non-holiday: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
 
-        // Whitelist dates
-        const allowedDates = [
-            new Date('2024-12-01'),
-            new Date('2024-12-05'),
-            new Date('2024-12-10'),
-            new Date('2024-12-15'),
-            new Date('2024-12-20')
-        ];
-        
-        const whitelistPicker = new DatePicker('#whitelist', {
-            enabledDates: allowedDates,
-            onChange: function(date) {
-                document.getElementById('whitelist-output').textContent = 
-                    date ? `Allowed: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      // Block vacation periods
+      const noVacationPicker = new DatePicker('#no-vacation', {
+        disabledDateRanges: [
+          { start: new Date('2024-12-20'), end: new Date('2024-12-31') },
+          { start: new Date('2024-07-01'), end: new Date('2024-07-15') },
+        ],
+        onChange: function (date) {
+          document.getElementById('no-vacation-output').textContent = date
+            ? `Available: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
 
-        // Custom block function
-        const customBlockPicker = new DatePicker('#custom-block', {
-            disableFunction: function(date) {
-                return date.getDay() === 5; // Block Fridays
-            },
-            onChange: function(date) {
-                document.getElementById('custom-block-output').textContent = 
-                    date ? `Non-Friday: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      // Whitelist dates
+      const allowedDates = [
+        new Date('2024-12-01'),
+        new Date('2024-12-05'),
+        new Date('2024-12-10'),
+        new Date('2024-12-15'),
+        new Date('2024-12-20'),
+      ];
 
-        // Dynamic control
-        const dynamicPicker = new DatePicker('#dynamic-control', {
-            onChange: function(date) {
-                document.getElementById('dynamic-output').textContent = 
-                    date ? `Selected: ${date.toDateString()}` : 'No date selected';
-            }
-        });
+      const whitelistPicker = new DatePicker('#whitelist', {
+        enabledDates: allowedDates,
+        onChange: function (date) {
+          document.getElementById('whitelist-output').textContent = date
+            ? `Allowed: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
 
-        function addHolidays() {
-            const holidays = ['2024-12-25', '2024-01-01', '2024-07-04'];
-            dynamicPicker.addDisabledDates(holidays);
-            document.getElementById('dynamic-output').textContent = 'Holidays added to blocked dates';
-        }
+      // Custom block function
+      const customBlockPicker = new DatePicker('#custom-block', {
+        disableFunction: function (date) {
+          return date.getDay() === 5; // Block Fridays
+        },
+        onChange: function (date) {
+          document.getElementById('custom-block-output').textContent = date
+            ? `Non-Friday: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
+
+      // Dynamic control
+      const dynamicPicker = new DatePicker('#dynamic-control', {
+        onChange: function (date) {
+          document.getElementById('dynamic-output').textContent = date
+            ? `Selected: ${date.toDateString()}`
+            : 'No date selected';
+        },
+      });
+
+      function addHolidays() {
+        const holidays = ['2024-12-25', '2024-01-01', '2024-07-04'];
+        dynamicPicker.addDisabledDates(holidays);
+        document.getElementById('dynamic-output').textContent = 'Holidays added to blocked dates';
+      }
     </script>
-</body>
+  </body>
 </html>

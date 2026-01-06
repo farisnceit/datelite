@@ -65,6 +65,10 @@ class DatePicker {
       positionY: null, // Fixed Y position (pixels from top)
       offsetX: 0, // X offset from calculated position
       offsetY: 0, // Y offset from calculated position
+      prevIcon: () =>
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`,
+      nextIcon: () =>
+        `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>`,
     };
 
     // Merge options
@@ -384,11 +388,11 @@ class DatePicker {
   getCalendarHTML() {
     return `
             <div class="datepicker-header">
-                <button type="button" class="datepicker-prev-btn" aria-label="Previous month">&lt;</button>
+                <button type="button" class="datepicker-prev-btn" aria-label="Previous month">${this.options.prevIcon()}</button>
                 <div class="datepicker-month-year">
                     ${this.getMonthYearHTML()}
                 </div>
-                <button type="button" class="datepicker-next-btn" aria-label="Next month">&gt;</button>
+                <button type="button" class="datepicker-next-btn" aria-label="Next month">${this.options.nextIcon()}</button>
             </div>
             <div class="datepicker-body">
                 <div class="datepicker-weekdays"></div>
@@ -1935,7 +1939,7 @@ class DatePicker {
   parseDate(dateStr) {
     // Handle null/undefined
     if (!dateStr) return null;
-    
+
     // Parse YYYY-MM-DD format as local date to avoid timezone shifts
     const parts = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
     if (parts) {

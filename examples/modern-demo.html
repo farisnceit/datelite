@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern DatePicker - Improved Design</title>
+    <link rel="stylesheet" href="../src/datelite.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+        background: #f8fafc;
+        min-height: 100vh;
+        padding: 40px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .header h1 {
+        font-size: 48px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+        color: #1e293b;
+      }
+
+      .header p {
+        font-size: 20px;
+        font-weight: 400;
+        color: #64748b;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .demo-card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .demo-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+
+      .demo-card h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+      }
+
+      .demo-card p {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 14px;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .output {
+        margin-top: 16px;
+        padding: 16px;
+        background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+        border-radius: 8px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 13px;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+      }
+
+      .output.has-value {
+        background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+        border-color: #6366f1;
+        color: #4f46e5;
+        font-weight: 600;
+      }
+
+      .features {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .features h2 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+      }
+
+      .feature-item {
+        padding: 20px;
+        background: linear-gradient(to bottom, #f8fafc, #ffffff);
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .feature-item:hover {
+        border-color: #6366f1;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1);
+      }
+
+      .feature-item h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+      }
+
+      .feature-item p {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.5;
+      }
+
+      .feature-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        color: white;
+        font-size: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 36px;
+        }
+
+        .demo-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>✨ Modern DatePicker</h1>
+        <p>Beautiful, accessible, and feature-rich date selection</p>
+      </div>
+
+      <div class="demo-grid">
+        <!-- Single Date -->
+        <div class="demo-card">
+          <h3>📅 Single Date</h3>
+          <p>Select a single date with a modern, intuitive interface</p>
+          <div class="form-group">
+            <label for="single-date">Choose a date:</label>
+            <input type="text" id="single-date" placeholder="Click to select date" />
+          </div>
+          <div class="output" id="single-output">No date selected</div>
+        </div>
+
+        <!-- Date Range -->
+        <div class="demo-card">
+          <h3>📆 Date Range</h3>
+          <p>Select start and end dates for your range</p>
+          <div class="form-group">
+            <label for="range-date">Select date range:</label>
+            <input type="text" id="range-date" placeholder="Click to select date range" />
+          </div>
+          <div class="output" id="range-output">No range selected</div>
+        </div>
+
+        <!-- Multiple Dates -->
+        <div class="demo-card">
+          <h3>🗓️ Multiple Dates</h3>
+          <p>Select multiple individual dates at once</p>
+          <div class="form-group">
+            <label for="multiple-dates">Pick multiple dates:</label>
+            <input type="text" id="multiple-dates" placeholder="Click to select multiple dates" />
+          </div>
+          <div class="output" id="multiple-output">No dates selected</div>
+        </div>
+
+        <!-- Date with Time -->
+        <div class="demo-card">
+          <h3>🕐 Date & Time</h3>
+          <p>Select both date and time in one picker</p>
+          <div class="form-group">
+            <label for="datetime">Choose date and time:</label>
+            <input type="text" id="datetime" placeholder="Click to select date and time" />
+          </div>
+          <div class="output" id="datetime-output">No date/time selected</div>
+        </div>
+
+        <!-- Inline Calendar -->
+        <div class="demo-card">
+          <h3>📊 Inline Calendar</h3>
+          <p>Always visible calendar display</p>
+          <div id="inline-calendar"></div>
+          <div class="output" id="inline-output">No date selected</div>
+        </div>
+
+        <!-- Min/Max Dates -->
+        <div class="demo-card">
+          <h3>🔒 Restricted Dates</h3>
+          <p>Date selection with minimum and maximum constraints</p>
+          <div class="form-group">
+            <label for="restricted-date">Select within range:</label>
+            <input type="text" id="restricted-date" placeholder="Next 30 days only" />
+          </div>
+          <div class="output" id="restricted-output">No date selected</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../dist/datelite.js"></script>
+    <script>
+      // Helper function to update output styling
+      function updateOutput(element, text) {
+        element.textContent = text;
+        if (text.includes('Selected') || text.includes('Range')) {
+          element.classList.add('has-value');
+        } else {
+          element.classList.remove('has-value');
+        }
+      }
+
+      // Single date picker
+      const singlePicker = new DatePicker('#single-date', {
+        mode: 'single',
+        format: 'Y-m-d',
+        onChange: function (date) {
+          const output = document.getElementById('single-output');
+          updateOutput(output, date ? `Selected: ${date.toDateString()}` : 'No date selected');
+        },
+      });
+
+      // Range picker
+      const rangePicker = new DatePicker('#range-date', {
+        mode: 'range',
+        format: 'Y-m-d',
+        onChange: function (dateRange) {
+          const output = document.getElementById('range-output');
+          if (dateRange.start && dateRange.end) {
+            updateOutput(
+              output,
+              `Range: ${dateRange.start.toDateString()} to ${dateRange.end.toDateString()}`
+            );
+          } else if (dateRange.start) {
+            updateOutput(output, `Start: ${dateRange.start.toDateString()} (select end date)`);
+          } else {
+            updateOutput(output, 'No range selected');
+          }
+        },
+      });
+
+      // Multiple dates picker
+      const multiPicker = new DatePicker('#multiple-dates', {
+        mode: 'multiple',
+        closeOnSelect: false,
+        onChange: function (dates) {
+          const output = document.getElementById('multiple-output');
+          if (dates && dates.length > 0) {
+            updateOutput(
+              output,
+              `Selected ${dates.length} dates: ${dates.map((d) => d.toLocaleDateString()).join(', ')}`
+            );
+          } else {
+            updateOutput(output, 'No dates selected');
+          }
+        },
+      });
+
+      // DateTime picker
+      const datetimePicker = new DatePicker('#datetime', {
+        mode: 'single',
+        enableTime: true,
+        time_24hr: false,
+        format: 'Y-m-d h:i A',
+        onChange: function (date) {
+          const output = document.getElementById('datetime-output');
+          updateOutput(
+            output,
+            date ? `Selected: ${date.toLocaleString()}` : 'No date/time selected'
+          );
+        },
+      });
+
+      // Inline picker
+      const inlinePicker = new DatePicker('#inline-calendar', {
+        mode: 'single',
+        inline: true,
+        format: 'Y-m-d',
+        onChange: function (date) {
+          const output = document.getElementById('inline-output');
+          updateOutput(output, date ? `Selected: ${date.toDateString()}` : 'No date selected');
+        },
+      });
+
+      // Restricted dates picker (next 30 days only)
+      const today = new Date();
+      const maxDate = new Date();
+      maxDate.setDate(today.getDate() + 30);
+
+      const restrictedPicker = new DatePicker('#restricted-date', {
+        mode: 'single',
+        format: 'Y-m-d',
+        minDate: today,
+        maxDate: maxDate,
+        onChange: function (date) {
+          const output = document.getElementById('restricted-output');
+          updateOutput(output, date ? `Selected: ${date.toDateString()}` : 'No date selected');
+        },
+      });
+    </script>
+  </body>
+</html>

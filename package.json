@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "pnpm run build:js && pnpm run build:css",
+    "watch": "rollup -c rollup.config.js --w",
     "build:js": "rollup -c rollup.config.js",
     "build:css": "pnpm run build:css:main && pnpm run build:css:min",
     "build:css:main": "postcss src/datelite.css -o dist/datelite.css",

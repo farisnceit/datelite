@@ -4,16 +4,15 @@
  */
 class DatePicker {
   constructor(element, options = {}) {
-    this.element =
-      typeof element === "string" ? document.querySelector(element) : element;
+    this.element = typeof element === 'string' ? document.querySelector(element) : element;
 
     if (!this.element) {
-      throw new Error("DatePicker: Invalid element provided");
+      throw new Error('DatePicker: Invalid element provided');
     }
 
     // Default configuration
     this.defaultOptions = {
-      mode: "single", // 'single', 'range', 'multiple'
+      mode: 'single', // 'single', 'range', 'multiple'
       startDate: null,
       endDate: null,
       minDate: null,
@@ -22,12 +21,12 @@ class DatePicker {
       enableTime: false,
       enableSeconds: false,
       time_24hr: true,
-      locale: "en",
+      locale: 'en',
       inline: false,
       firstDayOfWeek: 0, // 0 = Sunday, 1 = Monday
-      format: "Y-m-d",
-      position: "auto", // 'auto', 'above', 'below'
-      theme: "default",
+      format: 'Y-m-d',
+      position: 'auto', // 'auto', 'above', 'below'
+      theme: 'default',
       showWeekNumbers: false,
       weekNumbers: false,
       allowInput: true,
@@ -36,9 +35,9 @@ class DatePicker {
       disableMobile: false,
       // Icon options
       showIcon: true,
-      iconPosition: "right", // 'left', 'right'
+      iconPosition: 'right', // 'left', 'right'
       customIcon: null, // Custom icon HTML or SVG
-      iconClass: "datepicker-icon",
+      iconClass: 'datepicker-icon',
       iconClickOpens: true,
       // Dropdown options
       enableMonthDropdown: true,
@@ -48,8 +47,8 @@ class DatePicker {
       maxYear: null,
       // Range confirmation options
       confirmRange: false, // Show Apply/Cancel buttons for range mode
-      applyButtonText: "Apply",
-      cancelButtonText: "Cancel",
+      applyButtonText: 'Apply',
+      cancelButtonText: 'Cancel',
       showRangeButtons: false, // Internal flag for showing buttons
       // Date blocking options
       disabledDates: [], // Array of specific dates to disable
@@ -65,14 +64,14 @@ class DatePicker {
       positionX: null, // Fixed X position (pixels from left)
       positionY: null, // Fixed Y position (pixels from top)
       offsetX: 0, // X offset from calculated position
-      offsetY: 0 // Y offset from calculated position
+      offsetY: 0, // Y offset from calculated position
     };
 
     // Merge options
     this.options = { ...this.defaultOptions, ...options };
 
     // Adjust options based on mode
-    if (this.options.mode === "range" && this.options.confirmRange) {
+    if (this.options.mode === 'range' && this.options.confirmRange) {
       // Force closeOnSelect to false for confirmation mode
       this.options.closeOnSelect = false;
     }
@@ -86,7 +85,7 @@ class DatePicker {
       startDate: null,
       endDate: null,
       currentTime: { hours: 12, minutes: 0, seconds: 0 },
-      viewMode: "days", // 'days', 'months', 'years'
+      viewMode: 'days', // 'days', 'months', 'years'
       // Range confirmation state
       tempStartDate: null,
       tempEndDate: null,
@@ -120,43 +119,35 @@ class DatePicker {
     // Locale data
     this.locales = {
       en: {
-        weekdays: [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        weekdaysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         months: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
         ],
         monthsShort: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
         ],
       },
     };
@@ -168,7 +159,7 @@ class DatePicker {
     try {
       this.init();
     } catch (error) {
-      console.error("DatePicker initialization failed:", error);
+      console.error('DatePicker initialization failed:', error);
       throw error;
     }
   }
@@ -178,20 +169,20 @@ class DatePicker {
    */
   bindMethods() {
     const methods = [
-      "handleDocumentClick",
-      "handleKeydown",
-      "handleInputChange",
-      "handleCalendarClick",
-      "handlePrevMonth",
-      "handleNextMonth",
-      "handleYearSelect",
-      "handleMonthSelect",
-      "handleDateSelect",
-      "handleTimeChange",
-      "handleClear",
-      "open",
-      "close",
-      "toggle",
+      'handleDocumentClick',
+      'handleKeydown',
+      'handleInputChange',
+      'handleCalendarClick',
+      'handlePrevMonth',
+      'handleNextMonth',
+      'handleYearSelect',
+      'handleMonthSelect',
+      'handleDateSelect',
+      'handleTimeChange',
+      'handleClear',
+      'open',
+      'close',
+      'toggle',
     ];
 
     methods.forEach((method) => {
@@ -219,22 +210,22 @@ class DatePicker {
   setupDOM() {
     try {
       // Create container
-      this.dom.container = document.createElement("div");
+      this.dom.container = document.createElement('div');
       this.dom.container.className = `datepicker-container ${this.options.theme}`;
 
       if (this.options.inline) {
-        this.dom.container.classList.add("datepicker-inline");
+        this.dom.container.classList.add('datepicker-inline');
         this.element.appendChild(this.dom.container);
       } else {
-        this.dom.container.classList.add("datepicker-popup");
-        
+        this.dom.container.classList.add('datepicker-popup');
+
         // Add positioning classes
         if (this.options.positionX !== null && this.options.positionY !== null) {
-          this.dom.container.classList.add("fixed-position");
+          this.dom.container.classList.add('fixed-position');
         } else if (this.options.positionX !== null || this.options.positionY !== null) {
-          this.dom.container.classList.add("custom-position");
+          this.dom.container.classList.add('custom-position');
         }
-        
+
         // Determine where to append the container
         const appendTarget = this.getAppendTarget();
         appendTarget.appendChild(this.dom.container);
@@ -246,7 +237,7 @@ class DatePicker {
       // Create calendar structure
       this.createCalendarStructure();
     } catch (error) {
-      console.error("Error setting up DOM:", error);
+      console.error('Error setting up DOM:', error);
       throw error;
     }
   }
@@ -258,24 +249,26 @@ class DatePicker {
     if (!this.options.appendTo) {
       return document.body; // Default behavior
     }
-    
+
     if (this.options.appendTo === 'body') {
       return document.body;
     }
-    
+
     if (typeof this.options.appendTo === 'string') {
       const target = document.querySelector(this.options.appendTo);
       if (!target) {
-        console.warn(`DatePicker: appendTo target "${this.options.appendTo}" not found, using body`);
+        console.warn(
+          `DatePicker: appendTo target "${this.options.appendTo}" not found, using body`
+        );
         return document.body;
       }
       return target;
     }
-    
+
     if (this.options.appendTo instanceof HTMLElement) {
       return this.options.appendTo;
     }
-    
+
     console.warn('DatePicker: Invalid appendTo option, using body');
     return document.body;
   }
@@ -286,16 +279,14 @@ class DatePicker {
   setupInputWithIcon() {
     // Get or create input
     this.dom.input =
-      this.element.tagName === "INPUT"
+      this.element.tagName === 'INPUT'
         ? this.element
-        : this.element.querySelector("input") || this.createInput();
+        : this.element.querySelector('input') || this.createInput();
 
     // If icon is enabled and input doesn't already have a wrapper
     if (
       this.options.showIcon &&
-      !this.dom.input.parentElement.classList.contains(
-        "datepicker-input-wrapper"
-      )
+      !this.dom.input.parentElement.classList.contains('datepicker-input-wrapper')
     ) {
       this.wrapInputWithIcon();
     }
@@ -306,14 +297,11 @@ class DatePicker {
    */
   wrapInputWithIcon() {
     // Create wrapper
-    this.dom.inputWrapper = document.createElement("div");
+    this.dom.inputWrapper = document.createElement('div');
     this.dom.inputWrapper.className = `datepicker-input-wrapper icon-${this.options.iconPosition}`;
 
     // Insert wrapper before input
-    this.dom.input.parentNode.insertBefore(
-      this.dom.inputWrapper,
-      this.dom.input
-    );
+    this.dom.input.parentNode.insertBefore(this.dom.inputWrapper, this.dom.input);
 
     // Move input into wrapper
     this.dom.inputWrapper.appendChild(this.dom.input);
@@ -326,7 +314,7 @@ class DatePicker {
    * Create datepicker icon
    */
   createIcon() {
-    this.dom.icon = document.createElement("span");
+    this.dom.icon = document.createElement('span');
     this.dom.icon.className = this.options.iconClass;
 
     // Use custom icon if provided, otherwise use default
@@ -337,7 +325,7 @@ class DatePicker {
     }
 
     // Add icon to wrapper
-    if (this.options.iconPosition === "left") {
+    if (this.options.iconPosition === 'left') {
       this.dom.inputWrapper.insertBefore(this.dom.icon, this.dom.input);
     } else {
       this.dom.inputWrapper.appendChild(this.dom.icon);
@@ -345,7 +333,7 @@ class DatePicker {
 
     // Add click event if enabled
     if (this.options.iconClickOpens) {
-      this.dom.icon.addEventListener("click", () => this.toggle());
+      this.dom.icon.addEventListener('click', () => this.toggle());
     }
   }
 
@@ -354,22 +342,25 @@ class DatePicker {
    */
   getDefaultIcon() {
     return `
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-        `;
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+            <rect x="7" y="14" width="2" height="2" fill="currentColor"></rect>
+            <rect x="11" y="14" width="2" height="2" fill="currentColor"></rect>
+            <rect x="15" y="14" width="2" height="2" fill="currentColor"></rect>
+        </svg>
+    `;
   }
 
   /**
    * Create input element if needed
    */
   createInput() {
-    const input = document.createElement("input");
-    input.type = "text";
-    input.className = "datepicker-input";
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'datepicker-input';
     input.placeholder = this.getPlaceholder();
     this.element.appendChild(input);
     return input;
@@ -380,12 +371,12 @@ class DatePicker {
    */
   createCalendarStructure() {
     try {
-      this.dom.calendar = document.createElement("div");
-      this.dom.calendar.className = "datepicker-calendar";
+      this.dom.calendar = document.createElement('div');
+      this.dom.calendar.className = 'datepicker-calendar';
       this.dom.calendar.innerHTML = this.getCalendarHTML();
       this.dom.container.appendChild(this.dom.calendar);
     } catch (error) {
-      console.error("Error creating calendar structure:", error);
+      console.error('Error creating calendar structure:', error);
       throw error;
     }
   }
@@ -406,7 +397,7 @@ class DatePicker {
                 <div class="datepicker-weekdays"></div>
                 <div class="datepicker-days"></div>
             </div>
-            ${this.options.enableTime ? this.getTimePickerHTML() : ""}
+            ${this.options.enableTime ? this.getTimePickerHTML() : ''}
             <div class="datepicker-footer">
                 ${this.getRangeButtonsHTML()}
                 <button type="button" class="datepicker-clear-btn">Clear</button>
@@ -447,7 +438,7 @@ class DatePicker {
     const locale = this.locales[this.options.locale];
     const months = locale.months;
 
-    let options = "";
+    let options = '';
     months.forEach((month, index) => {
       options += `<option value="${index}">${month}</option>`;
     });
@@ -460,12 +451,10 @@ class DatePicker {
    */
   getYearDropdownHTML() {
     const currentYear = new Date().getFullYear();
-    const minYear =
-      this.options.minYear || currentYear - this.options.yearRange;
-    const maxYear =
-      this.options.maxYear || currentYear + this.options.yearRange;
+    const minYear = this.options.minYear || currentYear - this.options.yearRange;
+    const maxYear = this.options.maxYear || currentYear + this.options.yearRange;
 
-    let options = "";
+    let options = '';
     for (let year = minYear; year <= maxYear; year++) {
       options += `<option value="${year}">${year}</option>`;
     }
@@ -477,7 +466,7 @@ class DatePicker {
    * Get range confirmation buttons HTML
    */
   getRangeButtonsHTML() {
-    if (this.options.mode === "range" && this.options.confirmRange) {
+    if (this.options.mode === 'range' && this.options.confirmRange) {
       return `
                 <div class="datepicker-range-buttons">
                     <button type="button" class="datepicker-apply-btn">${this.options.applyButtonText}</button>
@@ -485,7 +474,7 @@ class DatePicker {
                 </div>
             `;
     }
-    return "";
+    return '';
   }
 
   /**
@@ -496,19 +485,19 @@ class DatePicker {
             <div class="datepicker-time">
                 <div class="time-input-group">
                     <input type="number" class="time-hours" min="0" max="${
-                      this.options.time_24hr ? "23" : "12"
+                      this.options.time_24hr ? '23' : '12'
                     }" value="12">
                     <span>:</span>
                     <input type="number" class="time-minutes" min="0" max="59" value="00">
                     ${
                       this.options.enableSeconds
                         ? '<span>:</span><input type="number" class="time-seconds" min="0" max="59" value="00">'
-                        : ""
+                        : ''
                     }
                     ${
                       !this.options.time_24hr
                         ? '<select class="time-ampm"><option value="AM">AM</option><option value="PM">PM</option></select>'
-                        : ""
+                        : ''
                     }
                 </div>
             </div>
@@ -521,26 +510,23 @@ class DatePicker {
   setupEvents() {
     if (!this.options.inline && this.dom.input) {
       if (this.options.clickOpens) {
-        this.dom.input.addEventListener("click", this.open);
+        this.dom.input.addEventListener('click', this.open);
       }
-      this.dom.input.addEventListener("keydown", this.handleKeydown);
+      this.dom.input.addEventListener('keydown', this.handleKeydown);
       if (this.options.allowInput) {
-        this.dom.input.addEventListener("input", this.handleInputChange);
+        this.dom.input.addEventListener('input', this.handleInputChange);
       }
     }
 
     // Calendar events
     if (this.dom.calendar) {
-      this.dom.calendar.addEventListener("click", this.handleCalendarClick);
-      this.dom.calendar.addEventListener(
-        "change",
-        this.handleDropdownChange.bind(this)
-      );
+      this.dom.calendar.addEventListener('click', this.handleCalendarClick);
+      this.dom.calendar.addEventListener('change', this.handleDropdownChange.bind(this));
     }
 
     // Document events for closing
-    document.addEventListener("click", this.handleDocumentClick);
-    document.addEventListener("keydown", this.handleKeydown);
+    document.addEventListener('click', this.handleDocumentClick);
+    document.addEventListener('keydown', this.handleKeydown);
   }
 
   /**
@@ -549,7 +535,7 @@ class DatePicker {
   setInitialDate() {
     if (this.options.defaultDate) {
       this.setDate(this.options.defaultDate);
-    } else if (this.options.startDate && this.options.mode === "range") {
+    } else if (this.options.startDate && this.options.mode === 'range') {
       this.setStartEndDate(this.options.startDate, this.options.endDate);
     }
   }
@@ -584,14 +570,12 @@ class DatePicker {
 
     // Handle month display/dropdown
     if (this.options.enableMonthDropdown) {
-      const monthDropdown = this.dom.calendar.querySelector(
-        ".datepicker-month-dropdown"
-      );
+      const monthDropdown = this.dom.calendar.querySelector('.datepicker-month-dropdown');
       if (monthDropdown) {
         monthDropdown.value = this.state.currentMonth;
       }
     } else {
-      const monthBtn = this.dom.calendar.querySelector(".datepicker-month-btn");
+      const monthBtn = this.dom.calendar.querySelector('.datepicker-month-btn');
       if (monthBtn) {
         monthBtn.textContent = locale.months[this.state.currentMonth];
       }
@@ -599,14 +583,12 @@ class DatePicker {
 
     // Handle year display/dropdown
     if (this.options.enableYearDropdown) {
-      const yearDropdown = this.dom.calendar.querySelector(
-        ".datepicker-year-dropdown"
-      );
+      const yearDropdown = this.dom.calendar.querySelector('.datepicker-year-dropdown');
       if (yearDropdown) {
         yearDropdown.value = this.state.currentYear;
       }
     } else {
-      const yearBtn = this.dom.calendar.querySelector(".datepicker-year-btn");
+      const yearBtn = this.dom.calendar.querySelector('.datepicker-year-btn');
       if (yearBtn) {
         yearBtn.textContent = this.state.currentYear;
       }
@@ -617,9 +599,7 @@ class DatePicker {
    * Render weekday headers
    */
   renderWeekdays() {
-    const weekdaysContainer = this.dom.calendar.querySelector(
-      ".datepicker-weekdays"
-    );
+    const weekdaysContainer = this.dom.calendar.querySelector('.datepicker-weekdays');
     const locale = this.locales[this.options.locale];
     const weekdays = locale.weekdaysShort;
 
@@ -631,14 +611,14 @@ class DatePicker {
 
     weekdaysContainer.innerHTML = adjustedWeekdays
       .map((day) => `<div class="weekday">${day}</div>`)
-      .join("");
+      .join('');
   }
 
   /**
    * Render calendar days
    */
   renderDays() {
-    const daysContainer = this.dom.calendar.querySelector(".datepicker-days");
+    const daysContainer = this.dom.calendar.querySelector('.datepicker-days');
     const daysHTML = this.generateDaysHTML();
     daysContainer.innerHTML = daysHTML;
   }
@@ -647,23 +627,15 @@ class DatePicker {
    * Generate HTML for calendar days
    */
   generateDaysHTML() {
-    const firstDay = new Date(
-      this.state.currentYear,
-      this.state.currentMonth,
-      1
-    );
-    const lastDay = new Date(
-      this.state.currentYear,
-      this.state.currentMonth + 1,
-      0
-    );
+    const firstDay = new Date(this.state.currentYear, this.state.currentMonth, 1);
+    const lastDay = new Date(this.state.currentYear, this.state.currentMonth + 1, 0);
     const startDate = new Date(firstDay);
 
     // Adjust start date to first day of week
     const dayOfWeek = (firstDay.getDay() - this.options.firstDayOfWeek + 7) % 7;
     startDate.setDate(startDate.getDate() - dayOfWeek);
 
-    let html = "";
+    let html = '';
     let currentDate = new Date(startDate);
 
     // Generate 6 weeks (42 days)
@@ -677,8 +649,8 @@ class DatePicker {
         html += `
                     <button type="button" 
                             class="datepicker-day ${dayClasses}" 
-                            data-date="${this.formatDate(currentDate, "Y-m-d")}"
-                            ${isDisabled ? "disabled" : ""}>
+                            data-date="${this.formatDate(currentDate, 'Y-m-d')}"
+                            ${isDisabled ? 'disabled' : ''}>
                         ${currentDate.getDate()}
                     </button>
                 `;
@@ -686,7 +658,7 @@ class DatePicker {
         currentDate.setDate(currentDate.getDate() + 1);
       }
 
-      html += "</div>";
+      html += '</div>';
     }
 
     return html;
@@ -701,31 +673,31 @@ class DatePicker {
 
     // Today
     if (this.isSameDay(date, today)) {
-      classes.push("today");
+      classes.push('today');
     }
 
     // Other month
     if (date.getMonth() !== this.state.currentMonth) {
-      classes.push("other-month");
+      classes.push('other-month');
     }
 
     // Selected
     if (this.isDateSelected(date)) {
-      classes.push("selected");
+      classes.push('selected');
     }
 
     // Range
-    if (this.options.mode === "range" && this.isDateInRange(date)) {
-      classes.push("in-range");
+    if (this.options.mode === 'range' && this.isDateInRange(date)) {
+      classes.push('in-range');
     }
 
     // Range start/end
-    if (this.options.mode === "range") {
+    if (this.options.mode === 'range') {
       if (this.state.startDate && this.isSameDay(date, this.state.startDate)) {
-        classes.push("range-start");
+        classes.push('range-start');
       }
       if (this.state.endDate && this.isSameDay(date, this.state.endDate)) {
-        classes.push("range-end");
+        classes.push('range-end');
       }
     }
 
@@ -734,27 +706,24 @@ class DatePicker {
       const dayOfWeek = date.getDay();
 
       // Weekend disabled
-      if (
-        this.options.disableWeekends &&
-        (dayOfWeek === 0 || dayOfWeek === 6)
-      ) {
-        classes.push("disabled-weekend");
+      if (this.options.disableWeekends && (dayOfWeek === 0 || dayOfWeek === 6)) {
+        classes.push('disabled-weekend');
       }
       // Past date disabled
       else if (this.options.blockPastDates && date < today) {
-        classes.push("disabled-past");
+        classes.push('disabled-past');
       }
       // Future date disabled
       else if (this.options.blockFutureDates && date > today) {
-        classes.push("disabled-future");
+        classes.push('disabled-future');
       }
       // Custom disabled
       else {
-        classes.push("disabled-custom");
+        classes.push('disabled-custom');
       }
     }
 
-    return classes.join(" ");
+    return classes.join(' ');
   }
 
   /**
@@ -781,27 +750,18 @@ class DatePicker {
 
     // If enabledDates is specified, only those dates are allowed
     if (this.options.enabledDates && this.options.enabledDates.length > 0) {
-      return !this.options.enabledDates.some((enabledDate) =>
-        this.isSameDay(date, enabledDate)
-      );
+      return !this.options.enabledDates.some((enabledDate) => this.isSameDay(date, enabledDate));
     }
 
     // Check specific disabled dates
     if (this.options.disabledDates && this.options.disabledDates.length > 0) {
-      if (
-        this.options.disabledDates.some((disabledDate) =>
-          this.isSameDay(date, disabledDate)
-        )
-      ) {
+      if (this.options.disabledDates.some((disabledDate) => this.isSameDay(date, disabledDate))) {
         return true;
       }
     }
 
     // Check disabled date ranges
-    if (
-      this.options.disabledDateRanges &&
-      this.options.disabledDateRanges.length > 0
-    ) {
+    if (this.options.disabledDateRanges && this.options.disabledDateRanges.length > 0) {
       for (const range of this.options.disabledDateRanges) {
         if (date >= range.start && date <= range.end) {
           return true;
@@ -811,10 +771,7 @@ class DatePicker {
 
     // Check disabled days of week
     const dayOfWeek = date.getDay();
-    if (
-      this.options.disabledDaysOfWeek &&
-      this.options.disabledDaysOfWeek.includes(dayOfWeek)
-    ) {
+    if (this.options.disabledDaysOfWeek && this.options.disabledDaysOfWeek.includes(dayOfWeek)) {
       return true;
     }
 
@@ -824,10 +781,7 @@ class DatePicker {
     }
 
     // Custom disable function
-    if (
-      this.options.disableFunction &&
-      typeof this.options.disableFunction === "function"
-    ) {
+    if (this.options.disableFunction && typeof this.options.disableFunction === 'function') {
       return this.options.disableFunction(date);
     }
 
@@ -838,9 +792,7 @@ class DatePicker {
    * Check if date is selected
    */
   isDateSelected(date) {
-    return this.state.selectedDates.some((selectedDate) =>
-      this.isSameDay(date, selectedDate)
-    );
+    return this.state.selectedDates.some((selectedDate) => this.isSameDay(date, selectedDate));
   }
 
   /**
@@ -868,19 +820,16 @@ class DatePicker {
   updateInputValue() {
     if (!this.dom.input) return;
 
-    let value = "";
+    let value = '';
 
     switch (this.options.mode) {
-      case "single":
+      case 'single':
         if (this.state.selectedDates.length > 0) {
-          value = this.formatDate(
-            this.state.selectedDates[0],
-            this.options.format
-          );
+          value = this.formatDate(this.state.selectedDates[0], this.options.format);
         }
         break;
 
-      case "range":
+      case 'range':
         if (this.state.startDate && this.state.endDate) {
           value = `${this.formatDate(
             this.state.startDate,
@@ -891,10 +840,10 @@ class DatePicker {
         }
         break;
 
-      case "multiple":
+      case 'multiple':
         value = this.state.selectedDates
           .map((date) => this.formatDate(date, this.options.format))
-          .join(", ");
+          .join(', ');
         break;
     }
 
@@ -905,18 +854,13 @@ class DatePicker {
    * Update popup position
    */
   updatePosition() {
-    if (
-      !this.options ||
-      this.options.inline ||
-      !this.dom.container
-    )
-      return;
+    if (!this.options || this.options.inline || !this.dom.container) return;
 
     // Make sure container is visible for measurement
-    const wasHidden = this.dom.container.style.visibility === "hidden";
+    const wasHidden = this.dom.container.style.visibility === 'hidden';
     if (wasHidden) {
-      this.dom.container.style.visibility = "visible";
-      this.dom.container.style.opacity = "0";
+      this.dom.container.style.visibility = 'visible';
+      this.dom.container.style.opacity = '0';
     }
 
     let top, left;
@@ -932,10 +876,10 @@ class DatePicker {
         console.warn('DatePicker: Cannot calculate position without input element');
         return;
       }
-      
+
       const inputRect = this.dom.input.getBoundingClientRect();
       const containerRect = this.dom.container.getBoundingClientRect();
-      
+
       if (this.options.positionX !== null) {
         left = this.options.positionX + this.options.offsetX;
         // Calculate Y based on input position
@@ -951,7 +895,7 @@ class DatePicker {
         console.warn('DatePicker: Cannot position without input element and custom coordinates');
         return;
       }
-      
+
       const inputRect = this.dom.input.getBoundingClientRect();
       const containerRect = this.dom.container.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
@@ -969,9 +913,9 @@ class DatePicker {
       }
 
       // Calculate vertical position
-      if (this.options.position === "above") {
+      if (this.options.position === 'above') {
         top = inputRect.top + window.scrollY - containerRect.height - 5 + this.options.offsetY;
-      } else if (this.options.position === "below") {
+      } else if (this.options.position === 'below') {
         top = inputRect.bottom + window.scrollY + 5 + this.options.offsetY;
       } else {
         // Auto positioning
@@ -996,8 +940,8 @@ class DatePicker {
 
     // Restore visibility
     if (wasHidden) {
-      this.dom.container.style.opacity = "";
-      this.dom.container.style.visibility = "";
+      this.dom.container.style.opacity = '';
+      this.dom.container.style.visibility = '';
     }
   }
 
@@ -1017,16 +961,16 @@ class DatePicker {
     if (!this.state || !this.state.isOpen) return;
 
     switch (event.key) {
-      case "Escape":
+      case 'Escape':
         this.close();
         break;
-      case "Enter":
+      case 'Enter':
         // Handle date selection
         break;
-      case "ArrowLeft":
-      case "ArrowRight":
-      case "ArrowUp":
-      case "ArrowDown":
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'ArrowUp':
+      case 'ArrowDown':
         // Handle keyboard navigation
         event.preventDefault();
         this.handleArrowKeys(event.key);
@@ -1050,25 +994,25 @@ class DatePicker {
   handleCalendarClick(event) {
     const target = event.target;
 
-    if (target.classList.contains("datepicker-day") && !target.disabled) {
+    if (target.classList.contains('datepicker-day') && !target.disabled) {
       const dateStr = target.dataset.date;
       const date = new Date(dateStr);
       this.handleDateSelect(date);
-    } else if (target.classList.contains("datepicker-prev-btn")) {
+    } else if (target.classList.contains('datepicker-prev-btn')) {
       this.handlePrevMonth();
-    } else if (target.classList.contains("datepicker-next-btn")) {
+    } else if (target.classList.contains('datepicker-next-btn')) {
       this.handleNextMonth();
-    } else if (target.classList.contains("datepicker-month-btn")) {
+    } else if (target.classList.contains('datepicker-month-btn')) {
       this.handleMonthSelect();
-    } else if (target.classList.contains("datepicker-year-btn")) {
+    } else if (target.classList.contains('datepicker-year-btn')) {
       this.handleYearSelect();
-    } else if (target.classList.contains("datepicker-clear-btn")) {
+    } else if (target.classList.contains('datepicker-clear-btn')) {
       this.handleClear();
-    } else if (target.classList.contains("datepicker-today-btn")) {
+    } else if (target.classList.contains('datepicker-today-btn')) {
       this.setDate(new Date());
-    } else if (target.classList.contains("datepicker-apply-btn")) {
+    } else if (target.classList.contains('datepicker-apply-btn')) {
       this.handleApply();
-    } else if (target.classList.contains("datepicker-cancel-btn")) {
+    } else if (target.classList.contains('datepicker-cancel-btn')) {
       this.handleCancel();
     }
   }
@@ -1076,42 +1020,33 @@ class DatePicker {
   handleDropdownChange(event) {
     const target = event.target;
 
-    if (target.classList.contains("datepicker-month-dropdown")) {
+    if (target.classList.contains('datepicker-month-dropdown')) {
       const newMonth = parseInt(target.value);
       this.state.currentMonth = newMonth;
-      this.callbacks.onMonthChange(
-        this.state.currentMonth,
-        this.state.currentYear
-      );
+      this.callbacks.onMonthChange(this.state.currentMonth, this.state.currentYear);
       this.rerender();
-    } else if (target.classList.contains("datepicker-year-dropdown")) {
+    } else if (target.classList.contains('datepicker-year-dropdown')) {
       const newYear = parseInt(target.value);
       this.state.currentYear = newYear;
       this.callbacks.onYearChange(this.state.currentYear);
-      this.callbacks.onMonthChange(
-        this.state.currentMonth,
-        this.state.currentYear
-      );
+      this.callbacks.onMonthChange(this.state.currentMonth, this.state.currentYear);
       this.rerender();
     }
   }
 
   handleDateSelect(date) {
     switch (this.options.mode) {
-      case "single":
+      case 'single':
         this.state.selectedDates = [date];
         if (this.options.closeOnSelect) {
           this.close();
         }
         break;
 
-      case "range":
+      case 'range':
         if (this.options.confirmRange) {
           // Use temporary dates for confirmation mode
-          if (
-            !this.state.tempStartDate ||
-            (this.state.tempStartDate && this.state.tempEndDate)
-          ) {
+          if (!this.state.tempStartDate || (this.state.tempStartDate && this.state.tempEndDate)) {
             // Start new range
             this.state.tempStartDate = date;
             this.state.tempEndDate = null;
@@ -1129,10 +1064,7 @@ class DatePicker {
           this.state.endDate = this.state.tempEndDate;
         } else {
           // Original behavior for non-confirmation mode
-          if (
-            !this.state.startDate ||
-            (this.state.startDate && this.state.endDate)
-          ) {
+          if (!this.state.startDate || (this.state.startDate && this.state.endDate)) {
             // Start new range - don't close on first date
             this.state.startDate = date;
             this.state.endDate = null;
@@ -1145,21 +1077,15 @@ class DatePicker {
               this.state.endDate = date;
             }
             // Only close when we have both start and end dates
-            if (
-              this.options.closeOnSelect &&
-              this.state.startDate &&
-              this.state.endDate
-            ) {
+            if (this.options.closeOnSelect && this.state.startDate && this.state.endDate) {
               this.close();
             }
           }
         }
         break;
 
-      case "multiple":
-        const existingIndex = this.state.selectedDates.findIndex((d) =>
-          this.isSameDay(d, date)
-        );
+      case 'multiple':
+        const existingIndex = this.state.selectedDates.findIndex((d) => this.isSameDay(d, date));
         if (existingIndex >= 0) {
           this.state.selectedDates.splice(existingIndex, 1);
         } else {
@@ -1181,10 +1107,7 @@ class DatePicker {
     } else {
       this.state.currentMonth--;
     }
-    this.callbacks.onMonthChange(
-      this.state.currentMonth,
-      this.state.currentYear
-    );
+    this.callbacks.onMonthChange(this.state.currentMonth, this.state.currentYear);
     this.rerender();
   }
 
@@ -1196,32 +1119,29 @@ class DatePicker {
     } else {
       this.state.currentMonth++;
     }
-    this.callbacks.onMonthChange(
-      this.state.currentMonth,
-      this.state.currentYear
-    );
+    this.callbacks.onMonthChange(this.state.currentMonth, this.state.currentYear);
     this.rerender();
   }
 
   handleMonthSelect() {
     // TODO: Implement month selection view
-    console.log("Month selection not implemented yet");
+    console.log('Month selection not implemented yet');
   }
 
   handleYearSelect() {
     // TODO: Implement year selection view
-    console.log("Year selection not implemented yet");
+    console.log('Year selection not implemented yet');
   }
 
   handleTimeChange(event) {
     const target = event.target;
     const value = parseInt(target.value);
 
-    if (target.classList.contains("time-hours")) {
+    if (target.classList.contains('time-hours')) {
       this.state.currentTime.hours = value;
-    } else if (target.classList.contains("time-minutes")) {
+    } else if (target.classList.contains('time-minutes')) {
       this.state.currentTime.minutes = value;
-    } else if (target.classList.contains("time-seconds")) {
+    } else if (target.classList.contains('time-seconds')) {
       this.state.currentTime.seconds = value;
     }
 
@@ -1234,7 +1154,7 @@ class DatePicker {
     this.state.endDate = null;
 
     // Clear confirmation state if in range confirmation mode
-    if (this.options.mode === "range" && this.options.confirmRange) {
+    if (this.options.mode === 'range' && this.options.confirmRange) {
       this.state.tempStartDate = null;
       this.state.tempEndDate = null;
       this.state.confirmedStartDate = null;
@@ -1247,7 +1167,7 @@ class DatePicker {
   }
 
   handleApply() {
-    if (this.options.mode === "range" && this.options.confirmRange) {
+    if (this.options.mode === 'range' && this.options.confirmRange) {
       // Confirm the temporary selection
       this.state.confirmedStartDate = this.state.tempStartDate;
       this.state.confirmedEndDate = this.state.tempEndDate;
@@ -1266,7 +1186,7 @@ class DatePicker {
   }
 
   handleCancel() {
-    if (this.options.mode === "range" && this.options.confirmRange) {
+    if (this.options.mode === 'range' && this.options.confirmRange) {
       // Restore confirmed dates or clear if none
       this.state.tempStartDate = this.state.confirmedStartDate;
       this.state.tempEndDate = this.state.confirmedEndDate;
@@ -1295,7 +1215,7 @@ class DatePicker {
     if (!this.options || this.options.inline || this.state.isOpen) return this;
 
     this.state.isOpen = true;
-    this.dom.container.classList.add("datepicker-open");
+    this.dom.container.classList.add('datepicker-open');
     this.updatePosition();
 
     if (this.callbacks && this.callbacks.onOpen) {
@@ -1311,7 +1231,7 @@ class DatePicker {
     if (!this.options || this.options.inline || !this.state.isOpen) return this;
 
     this.state.isOpen = false;
-    this.dom.container.classList.remove("datepicker-open");
+    this.dom.container.classList.remove('datepicker-open');
     this.callbacks.onClose();
     return this;
   }
@@ -1329,19 +1249,18 @@ class DatePicker {
   setDate(date) {
     if (!date) return this;
 
-    const parsedDate =
-      typeof date === "string" ? this.parseDate(date) : new Date(date);
+    const parsedDate = typeof date === 'string' ? this.parseDate(date) : new Date(date);
 
     switch (this.options.mode) {
-      case "single":
+      case 'single':
         this.state.selectedDates = [parsedDate];
         break;
-      case "multiple":
+      case 'multiple':
         if (!this.isDateSelected(parsedDate)) {
           this.state.selectedDates.push(parsedDate);
         }
         break;
-      case "range":
+      case 'range':
         this.state.startDate = parsedDate;
         this.state.endDate = null;
         break;
@@ -1361,11 +1280,9 @@ class DatePicker {
    */
   getDate() {
     switch (this.options.mode) {
-      case "single":
-        return this.state.selectedDates.length > 0
-          ? this.state.selectedDates[0]
-          : null;
-      case "range":
+      case 'single':
+        return this.state.selectedDates.length > 0 ? this.state.selectedDates[0] : null;
+      case 'range':
         if (this.options.confirmRange) {
           // Return confirmed dates, not temporary ones
           return {
@@ -1378,7 +1295,7 @@ class DatePicker {
             end: this.state.endDate,
           };
         }
-      case "multiple":
+      case 'multiple':
         return [...this.state.selectedDates];
       default:
         return null;
@@ -1389,15 +1306,15 @@ class DatePicker {
    * Set start and end dates for range mode
    */
   setStartEndDate(startDate, endDate) {
-    if (this.options.mode !== "range") return this;
+    if (this.options.mode !== 'range') return this;
 
     this.state.startDate = startDate
-      ? typeof startDate === "string"
+      ? typeof startDate === 'string'
         ? this.parseDate(startDate)
         : new Date(startDate)
       : null;
     this.state.endDate = endDate
-      ? typeof endDate === "string"
+      ? typeof endDate === 'string'
         ? this.parseDate(endDate)
         : new Date(endDate)
       : null;
@@ -1417,7 +1334,7 @@ class DatePicker {
    */
   setMinDate(date) {
     this.options.minDate = date
-      ? typeof date === "string"
+      ? typeof date === 'string'
         ? this.parseDate(date)
         : new Date(date)
       : null;
@@ -1430,7 +1347,7 @@ class DatePicker {
    */
   setMaxDate(date) {
     this.options.maxDate = date
-      ? typeof date === "string"
+      ? typeof date === 'string'
         ? this.parseDate(date)
         : new Date(date)
       : null;
@@ -1521,12 +1438,8 @@ class DatePicker {
     if (!Array.isArray(dates)) dates = [dates];
 
     dates.forEach((date) => {
-      const dateObj =
-        typeof date === "string" ? this.parseDate(date) : new Date(date);
-      if (
-        dateObj &&
-        !this.options.disabledDates.some((d) => this.isSameDay(d, dateObj))
-      ) {
+      const dateObj = typeof date === 'string' ? this.parseDate(date) : new Date(date);
+      if (dateObj && !this.options.disabledDates.some((d) => this.isSameDay(d, dateObj))) {
         this.options.disabledDates.push(dateObj);
       }
     });
@@ -1542,8 +1455,7 @@ class DatePicker {
     if (!Array.isArray(dates)) dates = [dates];
 
     dates.forEach((date) => {
-      const dateObj =
-        typeof date === "string" ? this.parseDate(date) : new Date(date);
+      const dateObj = typeof date === 'string' ? this.parseDate(date) : new Date(date);
       if (dateObj) {
         this.options.disabledDates = this.options.disabledDates.filter(
           (d) => !this.isSameDay(d, dateObj)
@@ -1568,12 +1480,8 @@ class DatePicker {
    * Add date range to disable
    */
   addDisabledDateRange(startDate, endDate) {
-    const start =
-      typeof startDate === "string"
-        ? this.parseDate(startDate)
-        : new Date(startDate);
-    const end =
-      typeof endDate === "string" ? this.parseDate(endDate) : new Date(endDate);
+    const start = typeof startDate === 'string' ? this.parseDate(startDate) : new Date(startDate);
+    const end = typeof endDate === 'string' ? this.parseDate(endDate) : new Date(endDate);
 
     if (start && end) {
       this.options.disabledDateRanges.push({ start, end });
@@ -1586,19 +1494,12 @@ class DatePicker {
    * Remove date range from disabled list
    */
   removeDisabledDateRange(startDate, endDate) {
-    const start =
-      typeof startDate === "string"
-        ? this.parseDate(startDate)
-        : new Date(startDate);
-    const end =
-      typeof endDate === "string" ? this.parseDate(endDate) : new Date(endDate);
+    const start = typeof startDate === 'string' ? this.parseDate(startDate) : new Date(startDate);
+    const end = typeof endDate === 'string' ? this.parseDate(endDate) : new Date(endDate);
 
     if (start && end) {
       this.options.disabledDateRanges = this.options.disabledDateRanges.filter(
-        (range) =>
-          !(
-            this.isSameDay(range.start, start) && this.isSameDay(range.end, end)
-          )
+        (range) => !(this.isSameDay(range.start, start) && this.isSameDay(range.end, end))
       );
       this.rerender();
     }
@@ -1690,9 +1591,7 @@ class DatePicker {
     if (!Array.isArray(dates)) dates = [dates];
 
     this.options.enabledDates = dates
-      .map((date) =>
-        typeof date === "string" ? this.parseDate(date) : new Date(date)
-      )
+      .map((date) => (typeof date === 'string' ? this.parseDate(date) : new Date(date)))
       .filter((date) => date !== null);
 
     this.rerender();
@@ -1712,7 +1611,7 @@ class DatePicker {
    * Set custom disable function
    */
   setDisableFunction(fn) {
-    this.options.disableFunction = typeof fn === "function" ? fn : null;
+    this.options.disableFunction = typeof fn === 'function' ? fn : null;
     this.rerender();
     return this;
   }
@@ -1725,16 +1624,16 @@ class DatePicker {
       console.warn('DatePicker: Cannot change appendTo for inline mode');
       return this;
     }
-    
+
     this.options.appendTo = target;
-    
+
     // Move container to new parent if it exists
     if (this.dom.container && this.dom.container.parentNode) {
       const newParent = this.getAppendTarget();
       newParent.appendChild(this.dom.container);
       this.updatePosition();
     }
-    
+
     return this;
   }
 
@@ -1744,11 +1643,11 @@ class DatePicker {
   setPosition(x, y) {
     this.options.positionX = typeof x === 'number' ? x : null;
     this.options.positionY = typeof y === 'number' ? y : null;
-    
+
     if (this.dom.container && this.state.isOpen) {
       this.updatePosition();
     }
-    
+
     return this;
   }
 
@@ -1757,11 +1656,11 @@ class DatePicker {
    */
   setPositionX(x) {
     this.options.positionX = typeof x === 'number' ? x : null;
-    
+
     if (this.dom.container && this.state.isOpen) {
       this.updatePosition();
     }
-    
+
     return this;
   }
 
@@ -1770,11 +1669,11 @@ class DatePicker {
    */
   setPositionY(y) {
     this.options.positionY = typeof y === 'number' ? y : null;
-    
+
     if (this.dom.container && this.state.isOpen) {
       this.updatePosition();
     }
-    
+
     return this;
   }
 
@@ -1784,11 +1683,11 @@ class DatePicker {
   setOffset(offsetX, offsetY) {
     this.options.offsetX = typeof offsetX === 'number' ? offsetX : 0;
     this.options.offsetY = typeof offsetY === 'number' ? offsetY : 0;
-    
+
     if (this.dom.container && this.state.isOpen) {
       this.updatePosition();
     }
-    
+
     return this;
   }
 
@@ -1800,11 +1699,11 @@ class DatePicker {
     this.options.positionY = null;
     this.options.offsetX = 0;
     this.options.offsetY = 0;
-    
+
     if (this.dom.container && this.state.isOpen) {
       this.updatePosition();
     }
-    
+
     return this;
   }
 
@@ -1816,7 +1715,7 @@ class DatePicker {
     if (!this.options.inline && this.dom.input && !this.dom.inputWrapper) {
       this.wrapInputWithIcon();
     } else if (this.dom.icon) {
-      this.dom.icon.style.display = "";
+      this.dom.icon.style.display = '';
     }
     return this;
   }
@@ -1827,7 +1726,7 @@ class DatePicker {
   hideIcon() {
     this.options.showIcon = false;
     if (this.dom.icon) {
-      this.dom.icon.style.display = "none";
+      this.dom.icon.style.display = 'none';
     }
     return this;
   }
@@ -1854,7 +1753,7 @@ class DatePicker {
    * Set icon position (left or right)
    */
   setIconPosition(position) {
-    if (position !== "left" && position !== "right") return this;
+    if (position !== 'left' && position !== 'right') return this;
 
     this.options.iconPosition = position;
 
@@ -1866,7 +1765,7 @@ class DatePicker {
       );
 
       // Move icon to correct position
-      if (position === "left") {
+      if (position === 'left') {
         this.dom.inputWrapper.insertBefore(this.dom.icon, this.dom.input);
       } else {
         this.dom.inputWrapper.appendChild(this.dom.icon);
@@ -1879,8 +1778,8 @@ class DatePicker {
   /**
    * Enable range confirmation mode
    */
-  enableRangeConfirmation(applyText = "Apply", cancelText = "Cancel") {
-    if (this.options.mode === "range") {
+  enableRangeConfirmation(applyText = 'Apply', cancelText = 'Cancel') {
+    if (this.options.mode === 'range') {
       this.options.confirmRange = true;
       this.options.applyButtonText = applyText;
       this.options.cancelButtonText = cancelText;
@@ -1914,7 +1813,7 @@ class DatePicker {
    * Get current range selection (including temporary)
    */
   getCurrentRange() {
-    if (this.options.mode === "range") {
+    if (this.options.mode === 'range') {
       return {
         start: this.state.startDate,
         end: this.state.endDate,
@@ -1938,13 +1837,13 @@ class DatePicker {
 
     // Update callbacks if provided
     Object.keys(this.callbacks).forEach((key) => {
-      if (newOptions[key] && typeof newOptions[key] === "function") {
+      if (newOptions[key] && typeof newOptions[key] === 'function') {
         this.callbacks[key] = newOptions[key];
       }
     });
 
     // Handle icon-related option changes
-    if ("showIcon" in newOptions) {
+    if ('showIcon' in newOptions) {
       if (newOptions.showIcon && !oldOptions.showIcon) {
         this.showIcon();
       } else if (!newOptions.showIcon && oldOptions.showIcon) {
@@ -1952,21 +1851,18 @@ class DatePicker {
       }
     }
 
-    if ("customIcon" in newOptions) {
+    if ('customIcon' in newOptions) {
       this.updateIcon(newOptions.customIcon);
     }
 
-    if ("iconPosition" in newOptions) {
+    if ('iconPosition' in newOptions) {
       this.setIconPosition(newOptions.iconPosition);
     }
 
     // Handle confirmation mode changes
-    if ("confirmRange" in newOptions && this.options.mode === "range") {
+    if ('confirmRange' in newOptions && this.options.mode === 'range') {
       if (newOptions.confirmRange && !oldOptions.confirmRange) {
-        this.enableRangeConfirmation(
-          newOptions.applyButtonText,
-          newOptions.cancelButtonText
-        );
+        this.enableRangeConfirmation(newOptions.applyButtonText, newOptions.cancelButtonText);
       } else if (!newOptions.confirmRange && oldOptions.confirmRange) {
         this.disableRangeConfirmation();
       }
@@ -1981,17 +1877,17 @@ class DatePicker {
    */
   destroy() {
     // Remove event listeners
-    document.removeEventListener("click", this.handleDocumentClick);
-    document.removeEventListener("keydown", this.handleKeydown);
+    document.removeEventListener('click', this.handleDocumentClick);
+    document.removeEventListener('keydown', this.handleKeydown);
 
     if (this.dom.input) {
-      this.dom.input.removeEventListener("click", this.open);
-      this.dom.input.removeEventListener("keydown", this.handleKeydown);
-      this.dom.input.removeEventListener("input", this.handleInputChange);
+      this.dom.input.removeEventListener('click', this.open);
+      this.dom.input.removeEventListener('keydown', this.handleKeydown);
+      this.dom.input.removeEventListener('input', this.handleInputChange);
     }
 
     if (this.dom.icon) {
-      this.dom.icon.removeEventListener("click", this.toggle);
+      this.dom.icon.removeEventListener('click', this.toggle);
     }
 
     // Remove DOM elements
@@ -2022,15 +1918,15 @@ class DatePicker {
    * Format date according to format string
    */
   formatDate(date, format) {
-    if (!date) return "";
+    if (!date) return '';
 
     const map = {
       Y: date.getFullYear(),
-      m: String(date.getMonth() + 1).padStart(2, "0"),
-      d: String(date.getDate()).padStart(2, "0"),
-      H: String(date.getHours()).padStart(2, "0"),
-      i: String(date.getMinutes()).padStart(2, "0"),
-      s: String(date.getSeconds()).padStart(2, "0"),
+      m: String(date.getMonth() + 1).padStart(2, '0'),
+      d: String(date.getDate()).padStart(2, '0'),
+      H: String(date.getHours()).padStart(2, '0'),
+      i: String(date.getMinutes()).padStart(2, '0'),
+      s: String(date.getSeconds()).padStart(2, '0'),
     };
 
     return format.replace(/[Ymdis]/g, (match) => map[match] || match);
@@ -2050,21 +1946,21 @@ class DatePicker {
    */
   getPlaceholder() {
     switch (this.options.mode) {
-      case "single":
-        return "Select date";
-      case "range":
-        return "Select date range";
-      case "multiple":
-        return "Select dates";
+      case 'single':
+        return 'Select date';
+      case 'range':
+        return 'Select date range';
+      case 'multiple':
+        return 'Select dates';
       default:
-        return "Select date";
+        return 'Select date';
     }
   }
 }
 
 // Export for use
-if (typeof module !== "undefined" && module.exports) {
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = DatePicker;
-} else if (typeof window !== "undefined") {
+} else if (typeof window !== 'undefined') {
   window.DatePicker = DatePicker;
 }

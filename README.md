@@ -19,6 +19,8 @@ A modern, lightweight, and highly customizable date picker component built with 
 - ⚡ **Lightweight** - ~25KB JS + ~15KB CSS (minified)
 - 🎪 **Framework Agnostic** - Works with any framework or vanilla JS
 
+[DateLite](https://raw.githubusercontent.com/farisnceit/datelite/refs/heads/master/images/DateLite.png)
+
 ## 🚀 Quick Start
 
 ### Installation
@@ -59,6 +61,398 @@ pnpm add @farisnceit/datelite
   });
 </script>
 ```
+
+## 🎨 Live Demo & Examples
+
+### 📺 Interactive Demo Pages
+
+Explore comprehensive live examples showcasing all features and configurations:
+
+#### **[Main Examples Page](examples/index.html)**
+
+Complete showcase with 20+ interactive examples including:
+
+- Single date selection
+- Date range picker
+- Multiple dates selection
+- Inline calendar
+- Dark theme
+- Time picker
+- Date blocking scenarios
+- Custom positioning
+- Form integrations
+
+#### **[Modern Demo](examples/modern-demo.html)**
+
+Beautifully designed demonstrations featuring:
+
+- Modern UI with smooth animations
+- Real-world use cases
+- Different themes and styles
+- Responsive layouts
+- Best practices implementation
+
+#### **[Complete Documentation](examples/documentation.html)**
+
+Interactive documentation with:
+
+- All configuration options explained
+- Live code playground
+- Copy-paste examples
+- API reference with demos
+- Event callbacks demonstrations
+
+#### **[Date Blocking Examples](examples/date-blocking.html)**
+
+Comprehensive date restriction scenarios:
+
+- Block past/future dates
+- Disable specific dates
+- Disable weekdays/weekends
+- Date ranges blocking
+- Custom disable functions
+- Business logic examples
+
+#### **[Theme Customization](examples/themes-customization.html)**
+
+Theme and styling demonstrations:
+
+- Built-in themes (default, dark, minimal)
+- Custom color schemes
+- CSS variables customization
+- Brand-specific styling
+- Dynamic theme switching
+
+#### **[Minimal Example](examples/minimal.html)**
+
+Lightweight implementation showing:
+
+- Bare minimum setup
+- Quick integration
+- Single file demo
+- CDN usage example
+
+#### **[Debug Page](examples/debug.html)**
+
+Development and debugging tools:
+
+- State inspection
+- Event logging
+- Performance monitoring
+- Configuration testing
+- API method testing
+
+### 🌐 Online Playground
+
+Try DateLite instantly in your browser:
+
+- **CodeSandbox**: [Open in CodeSandbox](https://codesandbox.io/s/datelite-demo)
+- **JSFiddle**: [Open in JSFiddle](https://jsfiddle.net/datelite/demo)
+- **CodePen**: [Open in CodePen](https://codepen.io/datelite/pen/demo)
+
+### 🎯 Quick Demo Examples
+
+#### 1. **Single Date Picker**
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@farisnceit/datelite/dist/datelite.min.css"
+    />
+  </head>
+  <body>
+    <input type="text" id="single-date" placeholder="Select a date" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@farisnceit/datelite/dist/datelite.min.js"></script>
+    <script>
+      new DatePicker('#single-date', {
+        mode: 'single',
+        format: 'Y-m-d',
+        theme: 'default',
+      });
+    </script>
+  </body>
+</html>
+```
+
+#### 2. **Date Range Picker**
+
+```html
+<input type="text" id="date-range" placeholder="Select date range" />
+
+<script>
+  new DatePicker('#date-range', {
+    mode: 'range',
+    confirmRange: true,
+    applyButtonText: 'Apply',
+    cancelButtonText: 'Cancel',
+    blockPastDates: true,
+    onChange: (dates) => {
+      console.log('Start:', dates.start);
+      console.log('End:', dates.end);
+    },
+  });
+</script>
+```
+
+#### 3. **Multiple Dates Selection**
+
+```html
+<input type="text" id="multiple-dates" placeholder="Select multiple dates" />
+
+<script>
+  new DatePicker('#multiple-dates', {
+    mode: 'multiple',
+    closeOnSelect: false,
+    onChange: (dates) => {
+      console.log('Selected dates:', dates);
+    },
+  });
+</script>
+```
+
+#### 4. **Inline Calendar**
+
+```html
+<div id="inline-calendar"></div>
+
+<script>
+  new DatePicker('#inline-calendar', {
+    inline: true,
+    mode: 'single',
+    showIcon: false,
+    onChange: (date) => {
+      console.log('Selected:', date);
+    },
+  });
+</script>
+```
+
+#### 5. **Date Picker with Time**
+
+```html
+<input type="text" id="datetime-picker" placeholder="Select date and time" />
+
+<script>
+  new DatePicker('#datetime-picker', {
+    mode: 'single',
+    enableTime: true,
+    time_24hr: false,
+    enableSeconds: true,
+    format: 'Y-m-d H:i:s',
+  });
+</script>
+```
+
+#### 6. **Dark Theme**
+
+```html
+<input type="text" id="dark-picker" placeholder="Select a date" />
+
+<script>
+  new DatePicker('#dark-picker', {
+    mode: 'single',
+    theme: 'dark',
+    format: 'Y-m-d',
+  });
+</script>
+```
+
+#### 7. **Block Weekends**
+
+```html
+<input type="text" id="no-weekends" placeholder="Select a weekday" />
+
+<script>
+  new DatePicker('#no-weekends', {
+    mode: 'single',
+    disableWeekends: true,
+    blockPastDates: true,
+  });
+</script>
+```
+
+#### 8. **Disable Specific Dates**
+
+```html
+<input type="text" id="disabled-dates" placeholder="Select available date" />
+
+<script>
+  new DatePicker('#disabled-dates', {
+    mode: 'single',
+    disabledDates: [
+      '2026-12-25', // Christmas
+      '2026-01-01', // New Year
+      '2026-07-04', // Independence Day
+    ],
+    disabledDateRanges: [
+      {
+        start: '2026-08-01',
+        end: '2026-08-15',
+      },
+    ],
+  });
+</script>
+```
+
+#### 9. **Custom Icon**
+
+```html
+<input type="text" id="custom-icon" placeholder="Select a date" />
+
+<script>
+  new DatePicker('#custom-icon', {
+    mode: 'single',
+    showIcon: true,
+    iconPosition: 'left',
+    customIcon:
+      '<svg width="20" height="20"><path d="M6 2a1 1 0 00-2 0v1H3a2 2 0 00-2 2v11a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-1V2a1 1 0 10-2 0v1H6V2z"/></svg>',
+  });
+</script>
+```
+
+#### 10. **Booking System Example**
+
+```html
+<input type="text" id="booking" placeholder="Select booking dates" />
+
+<script>
+  new DatePicker('#booking', {
+    mode: 'range',
+    confirmRange: true,
+    blockPastDates: true,
+    minDate: new Date(),
+    maxDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
+    disableFunction: (date) => {
+      // Custom logic: disable fully booked dates
+      const bookedDates = ['2026-02-14', '2026-02-15'];
+      return bookedDates.includes(date.toISOString().split('T')[0]);
+    },
+    onChange: (dates) => {
+      if (dates.start && dates.end) {
+        const days = Math.ceil((dates.end - dates.start) / (1000 * 60 * 60 * 24));
+        console.log(`Booking for ${days} days`);
+      }
+    },
+  });
+</script>
+```
+
+#### 11. **With Event Callbacks**
+
+```html
+<input type="text" id="event-picker" placeholder="Select a date" />
+<div id="output"></div>
+
+<script>
+  new DatePicker('#event-picker', {
+    mode: 'single',
+
+    onReady: function () {
+      console.log('DatePicker initialized');
+    },
+
+    onOpen: function () {
+      console.log('Calendar opened');
+    },
+
+    onClose: function () {
+      console.log('Calendar closed');
+    },
+
+    onChange: function (date) {
+      console.log('Date changed:', date);
+      document.getElementById('output').textContent = date;
+    },
+
+    onMonthChange: function (month, year) {
+      console.log('Viewing:', month, year);
+    },
+
+    onClear: function () {
+      console.log('Selection cleared');
+    },
+  });
+</script>
+```
+
+#### 12. **Responsive Mobile-First**
+
+```html
+<input type="text" id="responsive-picker" placeholder="Select a date" />
+
+<script>
+  const isMobile = window.innerWidth < 768;
+
+  new DatePicker('#responsive-picker', {
+    mode: 'single',
+    inline: isMobile,
+    position: isMobile ? 'auto' : 'below',
+    closeOnSelect: !isMobile,
+    theme: isMobile ? 'minimal' : 'default',
+  });
+</script>
+```
+
+### 📁 Running Examples Locally
+
+To run the demo pages locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/farizbytes/datelite.git
+cd datelite
+
+# Install dependencies
+pnpm install
+
+# Build the project
+pnpm build
+
+# Start local server
+pnpm serve
+
+# Or use any static server
+npx http-server . -p 8080
+```
+
+Then open your browser to:
+
+- **Main examples**: `http://localhost:8080/examples/index.html`
+- **Modern demo**: `http://localhost:8080/examples/modern-demo.html`
+- **Documentation**: `http://localhost:8080/examples/documentation.html`
+- **Date blocking**: `http://localhost:8080/examples/date-blocking.html`
+- **Theme customization**: `http://localhost:8080/examples/themes-customization.html`
+- **Minimal example**: `http://localhost:8080/examples/minimal.html`
+- **Debug page**: `http://localhost:8080/examples/debug.html`
+
+### 🔗 External Demo Resources
+
+- **Official Demo Site**: [https://farizbytes.github.io/datelite](https://farizbytes.github.io/datelite)
+- **NPM Package Page**: [https://www.npmjs.com/package/@farisnceit/datelite](https://www.npmjs.com/package/@farisnceit/datelite)
+- **GitHub Repository**: [https://github.com/farizbytes/datelite](https://github.com/farizbytes/datelite)
+
+### 💡 Demo Tips
+
+1. **Open Browser Console**: See event logging and API responses
+2. **Inspect Elements**: Examine DOM structure and CSS classes
+3. **Modify on the Fly**: Change options in console to test features
+4. **Check Responsiveness**: Resize browser to test mobile behavior
+5. **Test Accessibility**: Use keyboard navigation and screen readers
+
+### 🎬 Video Tutorials
+
+Coming soon:
+
+- Basic setup walkthrough (5 min)
+- Advanced features deep-dive (15 min)
+- Integration with React/Vue (10 min)
+- Customization and theming (8 min)
+
+---
 
 ## � Framework Integration
 

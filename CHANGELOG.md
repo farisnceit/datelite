@@ -5,9 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-01-XX
+## [1.0.0] - 2026-01-06
 
 ### Added
+
 - Initial release of Vanilla DatePicker
 - Single, range, and multiple date selection modes
 - Comprehensive date blocking options
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No external dependencies
 
 ### Features
+
 - **Selection Modes**: Single date, date ranges, multiple dates
 - **Date Blocking**: Disable specific dates, ranges, weekdays, weekends, past/future dates
 - **Customization**: 50+ CSS variables, custom themes, icon control
@@ -40,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Framework Agnostic**: Works with any framework or vanilla JavaScript
 
 ### Browser Support
+
 - Chrome 60+
 - Firefox 55+
 - Safari 12+
@@ -48,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chrome Mobile 60+
 
 ### Bundle Size
+
 - JavaScript: ~25KB minified
 - CSS: ~15KB minified
 - Zero dependencies

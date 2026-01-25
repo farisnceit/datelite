@@ -1,420 +1,480 @@
-# DatePicker Quick Start Guide
+# 🚀 Quick Start Guide
+
+Get up and running with DateLite in less than 5 minutes!
 
 ## Installation
 
-### 1. Include Files
+Choose your preferred method:
+
+### NPM
+
+```bash
+npm install @farisnceit/datelite
+```
+
+### Yarn
+
+```bash
+yarn add @farisnceit/datelite
+```
+
+### PNPM
+
+```bash
+pnpm add @farisnceit/datelite
+```
+
+### CDN
 
 ```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="src/datelite.css" />
-  </head>
-  <body>
-    <!-- Your HTML -->
-    <script src="src/DatePicker.js"></script>
-  </body>
-</html>
+<!-- Add to your HTML <head> -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@farisnceit/datelite/dist/datelite.min.css"
+/>
+
+<!-- Add before closing </body> -->
+<script src="https://cdn.jsdelivr.net/npm/@farisnceit/datelite/dist/datelite.min.js"></script>
 ```
 
-### 2. Basic HTML
+## Basic Setup
+
+### 1. Add HTML Input
 
 ```html
-<input type="text" id="my-datepicker" placeholder="Select a date" />
+<input type="text" id="datepicker" placeholder="Select a date" />
 ```
 
-### 3. Initialize
+### 2. Initialize DatePicker
 
-```javascript
-const picker = new DatePicker("#my-datepicker");
+```html
+<script>
+  const picker = new DatePicker('#datepicker', {
+    mode: 'single',
+    format: 'Y-m-d',
+  });
+</script>
 ```
+
+That's it! You now have a working date picker. 🎉
 
 ## Common Use Cases
 
-### Single Date Selection
+### Date Range Picker
 
-```javascript
-const picker = new DatePicker("#date-input", {
-  mode: "single",
-  format: "Y-m-d",
-  onChange: function (date) {
-    console.log("Selected:", date);
-  },
-});
+Perfect for booking systems, date filters, etc.
+
+```html
+<input type="text" id="date-range" placeholder="Select date range" />
+
+<script>
+  const rangePicker = new DatePicker('#date-range', {
+    mode: 'range',
+    format: 'Y-m-d',
+    onChange: function (dateRange) {
+      console.log('Start:', dateRange.start);
+      console.log('End:', dateRange.end);
+    },
+  });
+</script>
 ```
 
-### Date Range Selection
+### Date & Time Picker
 
-```javascript
-const rangePicker = new DatePicker("#range-input", {
-  mode: "range",
-  format: "Y-m-d",
-  onChange: function (dateRange) {
-    console.log("Range:", dateRange.start, "to", dateRange.end);
-  },
-});
+For appointments, events, etc.
+
+```html
+<input type="text" id="datetime" placeholder="Select date and time" />
+
+<script>
+  const datetimePicker = new DatePicker('#datetime', {
+    mode: 'single',
+    enableTime: true,
+    time_24hr: false,
+    format: 'Y-m-d h:i A',
+  });
+</script>
 ```
 
-### Multiple Date Selection
+### Future Dates Only
 
-```javascript
-const multiPicker = new DatePicker("#multi-input", {
-  mode: "multiple",
-  closeOnSelect: false,
-  onChange: function (dates) {
-    console.log("Selected dates:", dates);
-  },
-});
+For booking future appointments.
+
+```html
+<input type="text" id="future-dates" placeholder="Select future date" />
+
+<script>
+  const futurePicker = new DatePicker('#future-dates', {
+    mode: 'single',
+    blockPastDates: true,
+    format: 'Y-m-d',
+  });
+</script>
+```
+
+### Weekdays Only
+
+For business day selection.
+
+```html
+<input type="text" id="weekdays" placeholder="Select weekday" />
+
+<script>
+  const weekdayPicker = new DatePicker('#weekdays', {
+    mode: 'single',
+    disableWeekends: true,
+    format: 'Y-m-d',
+  });
+</script>
 ```
 
 ### Inline Calendar
 
+Always visible calendar.
+
 ```html
 <div id="inline-calendar"></div>
+
+<script>
+  const inlinePicker = new DatePicker('#inline-calendar', {
+    inline: true,
+    mode: 'single',
+    onChange: function (date) {
+      console.log('Selected:', date);
+    },
+  });
+</script>
 ```
 
+## Essential Options
+
+### Mode
+
 ```javascript
-const inlinePicker = new DatePicker("#inline-calendar", {
-  inline: true,
-  mode: "single",
-});
+mode: 'single'; // Single date selection
+mode: 'range'; // Date range selection
+mode: 'multiple'; // Multiple dates selection
 ```
 
-### With Time Selection
+### Format
 
 ```javascript
-const timePicker = new DatePicker("#datetime-input", {
-  enableTime: true,
-  time_24hr: true,
-  format: "Y-m-d H:i",
-});
+format: 'Y-m-d'; // 2024-12-25
+format: 'm/d/Y'; // 12/25/2024
+format: 'd-m-Y'; // 25-12-2024
+format: 'Y-m-d h:i A'; // 2024-12-25 02:30 PM
 ```
 
-## Configuration Examples
-
-### Date Constraints
+### Position
 
 ```javascript
-const picker = new DatePicker("#input", {
-  minDate: new Date(), // Today onwards
-  maxDate: "2024-12-31", // Until end of year
-  disabledDates: ["2024-12-25", "2024-01-01"], // Holidays
-  disableWeekends: true,
-});
+position: 'auto'; // Smart positioning (default)
+position: 'bottom'; // Always below input
+position: 'top'; // Always above input
 ```
 
-### Custom Styling
+### Theme
 
 ```javascript
-const picker = new DatePicker("#input", {
-  theme: "dark",
-  showIcon: true,
-  iconPosition: "left",
-  customIcon: "📅",
-});
+theme: 'default'; // Default blue theme
+theme: 'dark'; // Dark theme
+theme: 'minimal'; // Minimal theme
 ```
 
-### Range with Confirmation
+## Working with Selected Dates
+
+### Get Selected Date
 
 ```javascript
-const picker = new DatePicker("#input", {
-  mode: "range",
-  confirmRange: true,
-  applyButtonText: "Confirm",
-  cancelButtonText: "Reset",
-});
+const picker = new DatePicker('#datepicker');
+
+// Get the selected date
+const selectedDate = picker.getDate();
+console.log(selectedDate);
 ```
 
-## API Quick Reference
-
-### Core Methods
+### Set Date Programmatically
 
 ```javascript
-picker.open(); // Open datepicker
-picker.close(); // Close datepicker
-picker.setDate("2024-12-25"); // Set date
-const date = picker.getDate(); // Get selected date
-picker.destroy(); // Clean up
+// Set to today
+picker.setDate(new Date());
+
+// Set to specific date
+picker.setDate('2024-12-25');
+
+// Set to date object
+picker.setDate(new Date(2024, 11, 25));
 ```
 
-### Date Blocking
+### Clear Selection
 
 ```javascript
-picker.addDisabledDates(["2024-12-25"]);
-picker.setDisableWeekends(true);
-picker.setBlockPastDates(true);
-picker.clearDisabledDates();
-```
-
-### Dynamic Updates
-
-```javascript
-picker.updateOptions({
-  theme: "dark",
-  format: "F j, Y",
-});
-
-picker.setMinDate("2024-01-01");
-picker.setMaxDate("2024-12-31");
+picker.clear();
 ```
 
 ## Event Handling
 
-```javascript
-const picker = new DatePicker("#input", {
-  onReady: function () {
-    console.log("DatePicker initialized");
-  },
+### onChange Event
 
-  onChange: function (date) {
-    console.log("Date changed:", date);
-    // Update other UI elements
-    document.getElementById("output").textContent = date;
+```javascript
+const picker = new DatePicker('#datepicker', {
+  onChange: function (selectedDate) {
+    // Update your form
+    document.getElementById('hidden-date').value = selectedDate;
+
+    // Show confirmation
+    alert('You selected: ' + selectedDate.toDateString());
+  },
+});
+```
+
+### Multiple Events
+
+```javascript
+const picker = new DatePicker('#datepicker', {
+  onReady: function () {
+    console.log('DatePicker is ready!');
   },
 
   onOpen: function () {
-    console.log("DatePicker opened");
+    console.log('Calendar opened');
+  },
+
+  onChange: function (date) {
+    console.log('Date selected:', date);
   },
 
   onClose: function () {
-    console.log("DatePicker closed");
+    console.log('Calendar closed');
   },
 });
 ```
 
-## Styling Customization
+## Date Restrictions
 
-### CSS Variables (if supported)
-
-```css
-.datepicker-container {
-  --primary-color: #007bff;
-  --background-color: #ffffff;
-  --border-color: #dee2e6;
-  --text-color: #495057;
-}
-```
-
-### Custom Theme
-
-```css
-.datepicker-container.my-theme {
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.datepicker-container.my-theme .datepicker-day.selected {
-  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-  color: white;
-}
-```
+### Min and Max Dates
 
 ```javascript
-const picker = new DatePicker("#input", {
-  theme: "my-theme",
+const picker = new DatePicker('#datepicker', {
+  minDate: new Date(), // Today onwards
+  maxDate: new Date(2024, 11, 31), // Until end of year
 });
 ```
 
-## Common Patterns
+### Disable Specific Dates
 
-### Form Integration
+```javascript
+const picker = new DatePicker('#datepicker', {
+  disabledDates: [
+    '2024-12-25', // Christmas
+    '2024-01-01', // New Year
+    new Date(2024, 6, 4), // July 4th
+  ],
+});
+```
+
+### Disable Weekends
+
+```javascript
+const picker = new DatePicker('#datepicker', {
+  disableWeekends: true,
+});
+```
+
+### Custom Disable Logic
+
+```javascript
+const picker = new DatePicker('#datepicker', {
+  disableFunction: function (date) {
+    // Disable all Fridays
+    return date.getDay() === 5;
+  },
+});
+```
+
+## Styling & Customization
+
+### Using CSS Variables
+
+```css
+:root {
+  --dp-primary-color: #3b82f6; /* Primary color */
+  --dp-primary-hover: #1d4ed8; /* Hover color */
+  --dp-bg-primary: #ffffff; /* Background */
+  --dp-text-primary: #1e293b; /* Text color */
+  --dp-border-radius-lg: 12px; /* Border radius */
+}
+```
+
+### Custom Theme Class
 
 ```html
-<form id="booking-form">
-  <label>Check-in Date:</label>
-  <input type="text" id="checkin" name="checkin" required />
+<style>
+  .datepicker-container.my-theme {
+    --dp-primary-color: #10b981;
+    --dp-primary-hover: #059669;
+  }
+</style>
 
-  <label>Check-out Date:</label>
-  <input type="text" id="checkout" name="checkout" required />
-
-  <button type="submit">Book Now</button>
-</form>
+<script>
+  const picker = new DatePicker('#datepicker', {
+    theme: 'my-theme',
+  });
+</script>
 ```
 
-```javascript
-const checkinPicker = new DatePicker("#checkin", {
-  minDate: new Date(),
-  onChange: function (date) {
-    // Update checkout minimum date
-    checkoutPicker.setMinDate(date);
+## Framework Integration
+
+### React
+
+```jsx
+import { useEffect, useRef } from 'react';
+
+function DatePickerComponent() {
+  const inputRef = useRef(null);
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    pickerRef.current = new DatePicker(inputRef.current, {
+      mode: 'single',
+      onChange: (date) => {
+        console.log('Selected:', date);
+      },
+    });
+
+    return () => {
+      pickerRef.current.destroy();
+    };
+  }, []);
+
+  return <input ref={inputRef} type="text" placeholder="Select date" />;
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <input ref="datepicker" type="text" placeholder="Select date" />
+</template>
+
+<script>
+export default {
+  mounted() {
+    this.picker = new DatePicker(this.$refs.datepicker, {
+      mode: 'single',
+      onChange: (date) => {
+        this.$emit('date-selected', date);
+      },
+    });
   },
-});
 
-const checkoutPicker = new DatePicker("#checkout", {
-  minDate: new Date(),
-});
-
-document
-  .getElementById("booking-form")
-  .addEventListener("submit", function (e) {
-    const checkin = checkinPicker.getDate();
-    const checkout = checkoutPicker.getDate();
-
-    if (!checkin || !checkout) {
-      e.preventDefault();
-      alert("Please select both dates");
-    }
-  });
-```
-
-### Dynamic Date Blocking
-
-```javascript
-const picker = new DatePicker("#input");
-
-// Block dates based on API response
-fetch("/api/unavailable-dates")
-  .then((response) => response.json())
-  .then((dates) => {
-    picker.addDisabledDates(dates);
-  });
-
-// Block weekends for business days only
-document
-  .getElementById("business-only")
-  .addEventListener("change", function (e) {
-    picker.setDisableWeekends(e.target.checked);
-  });
-```
-
-### Multiple DatePickers Coordination
-
-```javascript
-const startPicker = new DatePicker("#start-date", {
-  onChange: function (date) {
-    // Update end date minimum
-    endPicker.setMinDate(date);
-
-    // Clear end date if it's before start
-    const endDate = endPicker.getDate();
-    if (endDate && endDate < date) {
-      endPicker.setDate(null);
+  beforeUnmount() {
+    if (this.picker) {
+      this.picker.destroy();
     }
   },
-});
+};
+</script>
+```
 
-const endPicker = new DatePicker("#end-date", {
-  onChange: function (date) {
-    // Update start date maximum
-    startPicker.setMaxDate(date);
-  },
-});
+### Angular
+
+```typescript
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+
+@Component({
+  selector: 'app-datepicker',
+  template: '<input #datepicker type="text" placeholder="Select date">',
+})
+export class DatepickerComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('datepicker') datepickerInput!: ElementRef;
+  private picker: any;
+
+  ngAfterViewInit() {
+    this.picker = new DatePicker(this.datepickerInput.nativeElement, {
+      mode: 'single',
+      onChange: (date: Date) => {
+        console.log('Selected:', date);
+      },
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.picker) {
+      this.picker.destroy();
+    }
+  }
+}
 ```
 
 ## Troubleshooting
 
-### DatePicker Not Showing
+### Calendar Not Appearing?
+
+1. **Check CSS is loaded**
+
+   ```html
+   <link rel="stylesheet" href="path/to/datelite.css" />
+   ```
+
+2. **Check JavaScript is loaded**
+
+   ```html
+   <script src="path/to/datelite.js"></script>
+   ```
+
+3. **Check z-index conflicts**
+   ```css
+   .datepicker-calendar {
+     z-index: 9999 !important;
+   }
+   ```
+
+### Position Issues?
 
 ```javascript
-// Check if element exists
-const element = document.getElementById("my-input");
-if (!element) {
-  console.error("Input element not found");
-}
-
-// Check CSS is loaded
-const styles = getComputedStyle(
-  document.querySelector(".datepicker-container")
-);
-if (!styles.position) {
-  console.error("DatePicker CSS not loaded");
-}
-```
-
-### Dates Not Updating
-
-```javascript
-// Ensure onChange callback is set
-const picker = new DatePicker("#input", {
-  onChange: function (date) {
-    console.log("Date changed:", date);
-    // Your update logic here
-  },
+// Try different position
+const picker = new DatePicker('#datepicker', {
+  position: 'bottom',
+  offsetY: 10,
 });
 
-// Check if date is disabled
-const testDate = new Date("2024-12-25");
-if (picker.isDateDisabled(testDate)) {
-  console.log("Date is disabled");
-}
-```
-
-### Performance Issues
-
-```javascript
-// Batch updates instead of multiple calls
-picker.updateOptions({
-  minDate: "2024-01-01",
-  maxDate: "2024-12-31",
-  disableWeekends: true,
-  theme: "dark",
-}); // Single re-render
-
-// Instead of:
-// picker.setMinDate('2024-01-01');  // Re-render
-// picker.setMaxDate('2024-12-31');  // Re-render
-// picker.setDisableWeekends(true);  // Re-render
-// picker.updateOptions({theme: 'dark'}); // Re-render
-```
-
-## Best Practices
-
-### 1. Always Clean Up
-
-```javascript
-// When removing DatePicker from DOM
-picker.destroy();
-picker = null;
-```
-
-### 2. Use Method Chaining
-
-```javascript
-const picker = new DatePicker("#input")
-  .setMinDate(new Date())
-  .setDisableWeekends(true)
-  .addDisabledDates(["2024-12-25"]);
-```
-
-### 3. Validate User Input
-
-```javascript
-const picker = new DatePicker("#input", {
-  onChange: function (date) {
-    if (date) {
-      // Valid date selected
-      this.element.classList.remove("error");
-    } else {
-      // No date or invalid date
-      this.element.classList.add("error");
-    }
-  },
+// Or use fixed position
+const picker = new DatePicker('#datepicker', {
+  positionX: 100,
+  positionY: 200,
 });
 ```
 
-### 4. Provide User Feedback
+### Date Not Selectable?
+
+Check your restrictions:
 
 ```javascript
-const picker = new DatePicker("#input", {
-  onOpen: function () {
-    document.body.classList.add("datepicker-open");
-  },
-  onClose: function () {
-    document.body.classList.remove("datepicker-open");
-  },
-  onChange: function (date) {
-    // Show confirmation
-    const message = date
-      ? `Selected: ${date.toDateString()}`
-      : "No date selected";
-    document.getElementById("status").textContent = message;
-  },
+const picker = new DatePicker('#datepicker', {
+  // Remove or adjust these
+  minDate: null,
+  maxDate: null,
+  disableWeekends: false,
+  blockPastDates: false,
+  disabledDates: [],
 });
 ```
 
 ## Next Steps
 
-- Read the [Developer Guide](DEVELOPER_GUIDE.md) for advanced customization
-- Check the [API Reference](API_REFERENCE.md) for complete method documentation
-- View `example.html` for comprehensive examples
-- Explore the source code in `DatePicker.js` for implementation details
+- 📖 Read the [Full Documentation](examples/documentation.html)
+- 🎨 Explore [Theming Options](examples/themes-customization.html)
+- 🚫 Learn about [Date Blocking](examples/date-blocking.html)
+- 👨‍💻 Check the [Developer Guide](DEVELOPER_GUIDE.md)
+
+## Need Help?
+
+- 📧 Email: support@farizbytes.com
+- 🐛 Report issues: [GitHub Issues](https://github.com/farizbytes/datelite/issues)
+- 💬 Ask questions: [GitHub Discussions](https://github.com/farizbytes/datelite/discussions)
+
+---
+
+**Happy coding! 🎉**

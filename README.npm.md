@@ -1,274 +1,301 @@
-# 📅 Datelite
+# @farisnceit/datelite
 
-[![npm version](https://badge.fury.io/js/%40your-org%2Fdatelite.svg)](https://badge.fury.io/js/%40your-org%2Fdatelite)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@your-org/datelite)](https://bundlephobia.com/package/@your-org/datelite)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+A modern, lightweight, and highly customizable date picker component built with pure vanilla JavaScript.
 
-A fully customizable, feature-rich date picker component built with **pure vanilla JavaScript**. Zero dependencies, modern ES6+ syntax, with comprehensive date selection modes, theming, and accessibility support.
-
-## ✨ Features
-
-- 🎯 **Multiple Selection Modes** - Single, range, and multiple date selection
-- 🎨 **50+ CSS Variables** - Complete theming control with CSS custom properties
-- 📱 **Mobile Responsive** - Touch-friendly interface with mobile optimizations
-- ♿ **Accessibility First** - ARIA labels, keyboard navigation, screen reader support
-- 🚫 **Comprehensive Date Blocking** - Disable dates, ranges, weekdays, custom logic
-- ⏰ **Time Selection** - Optional time picker with 24hr/AM-PM and seconds
-- 🎭 **Icon Customization** - Position control, custom icons, show/hide options
-- 📍 **Flexible Positioning** - Custom positioning, append to any element
-- 🌍 **Locale Ready** - Multi-language support structure
-- 🔗 **Method Chaining** - Fluent API for easy configuration
-- 📦 **Zero Dependencies** - Pure vanilla JavaScript, no external libraries
-- 🎪 **Framework Agnostic** - Works with React, Vue, Angular, or plain HTML
-
-## 🚀 Quick Start
-
-### Installation
+## Installation
 
 ```bash
-pnpm add @your-org/datelite
+npm install @farisnceit/datelite
 ```
 
-### Basic Usage
-
-```html
-<!-- Include CSS -->
-<link rel="stylesheet" href="node_modules/@your-org/datelite/dist/datelite.min.css">
-
-<!-- HTML -->
-<input type="text" id="my-datepicker" placeholder="Select a date">
-
-<!-- Include JS -->
-<script src="node_modules/@your-org/datelite/dist/datelite.min.js"></script>
-<script>
-  const picker = new DatePicker('#my-datepicker');
-</script>
-```
-
-### ES6 Module
+## Quick Start
 
 ```javascript
-import DatePicker from '@your-org/datelite';
-import '@your-org/datelite/dist/datelite.min.css';
+import '@farisnceit/datelite/dist/datelite.min.css';
+import DatePicker from '@farisnceit/datelite';
 
-const picker = new DatePicker('#my-datepicker', {
+const picker = new DatePicker('#datepicker', {
   mode: 'single',
   format: 'Y-m-d',
-  onChange: (date) => {
-    console.log('Selected:', date);
-  }
 });
 ```
 
-### CommonJS
+## Features
 
-```javascript
-const DatePicker = require('@your-org/datelite');
+- 🎯 **Zero Dependencies** - Pure vanilla JavaScript
+- 🎨 **Modern Design** - Clean, professional UI
+- 🔧 **Highly Customizable** - 50+ CSS variables
+- 📱 **Fully Responsive** - Works on all devices
+- ♿ **Accessible** - ARIA labels and keyboard navigation
+- 🌍 **i18n Support** - Multi-language ready
+- ⚡ **Lightweight** - ~25KB JS + ~15KB CSS (minified)
 
-const picker = new DatePicker('#my-datepicker');
-```
-
-## 📖 Examples
+## Basic Usage
 
 ### Single Date Selection
+
 ```javascript
-const picker = new DatePicker('#date-input', {
+const picker = new DatePicker('#input', {
   mode: 'single',
-  format: 'F j, Y',
-  onChange: (date) => {
+  format: 'Y-m-d',
+  onChange: function (date) {
     console.log('Selected:', date);
-  }
+  },
 });
 ```
 
 ### Date Range Selection
+
 ```javascript
-const rangePicker = new DatePicker('#range-input', {
+const picker = new DatePicker('#input', {
   mode: 'range',
-  confirmRange: true, // Show Apply/Cancel buttons
-  onChange: (dateRange) => {
-    console.log('Range:', dateRange.start, 'to', dateRange.end);
-  }
+  format: 'Y-m-d',
+  onChange: function (dateRange) {
+    console.log('Start:', dateRange.start);
+    console.log('End:', dateRange.end);
+  },
 });
 ```
 
 ### Multiple Date Selection
+
 ```javascript
-const multiPicker = new DatePicker('#multi-input', {
+const picker = new DatePicker('#input', {
   mode: 'multiple',
   closeOnSelect: false,
-  onChange: (dates) => {
+  onChange: function (dates) {
     console.log('Selected dates:', dates);
-  }
+  },
 });
 ```
 
-### With Time Selection
+### Date & Time Picker
+
 ```javascript
-const timePicker = new DatePicker('#datetime-input', {
+const picker = new DatePicker('#input', {
+  mode: 'single',
   enableTime: true,
   time_24hr: false,
-  enableSeconds: true,
-  format: 'Y-m-d h:i:s A'
+  format: 'Y-m-d h:i A',
 });
 ```
 
-### Date Blocking
-```javascript
-const businessPicker = new DatePicker('#business-input', {
-  disableWeekends: true,
-  blockPastDates: true,
-  disabledDates: ['2024-12-25', '2024-01-01'], // Holidays
-  disableFunction: (date) => {
-    // Custom logic - block company holidays
-    return isCompanyHoliday(date);
-  }
-});
-```
-
-### Custom Positioning
-```javascript
-const positionedPicker = new DatePicker('#positioned-input', {
-  appendTo: '#custom-container',
-  positionX: 100,
-  positionY: 200,
-  offsetX: 10,
-  offsetY: -5
-});
-```
-
-### Custom Theme
-```css
-.my-custom-theme {
-  --dp-primary-color: #ff6b6b;
-  --dp-primary-hover: #ff5252;
-  --dp-day-size: 42px;
-  --dp-border-radius-md: 12px;
-}
-```
+### Inline Calendar
 
 ```javascript
-const themedPicker = new DatePicker('#themed-input', {
-  theme: 'my-custom-theme'
+const picker = new DatePicker('#container', {
+  inline: true,
+  mode: 'single',
 });
 ```
 
-## 🎛️ Configuration Options
+## Configuration Options
 
-### Core Options
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `mode` | string | `'single'` | Selection mode: `'single'`, `'range'`, `'multiple'` |
-| `format` | string | `'Y-m-d'` | Date format string |
-| `locale` | string | `'en'` | Locale for month/day names |
-| `theme` | string | `'default'` | Theme: `'default'`, `'dark'`, `'minimal'` |
-| `inline` | boolean | `false` | Display inline instead of popup |
+### Mode Options
 
-### Date Constraints
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `minDate` | Date\|string | `null` | Minimum selectable date |
-| `maxDate` | Date\|string | `null` | Maximum selectable date |
-| `disabledDates` | Array | `[]` | Array of dates to disable |
-| `disableWeekends` | boolean | `false` | Disable weekends |
-| `blockPastDates` | boolean | `false` | Block all past dates |
+| Option       | Type    | Default    | Description                                   |
+| ------------ | ------- | ---------- | --------------------------------------------- |
+| `mode`       | string  | `'single'` | Selection mode: 'single', 'range', 'multiple' |
+| `inline`     | boolean | `false`    | Display calendar inline                       |
+| `enableTime` | boolean | `false`    | Enable time selection                         |
+| `time_24hr`  | boolean | `true`     | Use 24-hour time format                       |
 
-### UI Customization
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `showIcon` | boolean | `true` | Show calendar icon |
-| `iconPosition` | string | `'right'` | Icon position: `'left'`, `'right'` |
-| `customIcon` | string | `null` | Custom icon HTML/SVG |
-| `enableMonthDropdown` | boolean | `true` | Show month dropdown |
-| `enableYearDropdown` | boolean | `true` | Show year dropdown |
+### Display Options
 
-[View all options →](./API_REFERENCE.md)
+| Option            | Type    | Default     | Description                         |
+| ----------------- | ------- | ----------- | ----------------------------------- |
+| `format`          | string  | `'Y-m-d'`   | Date format string                  |
+| `theme`           | string  | `'default'` | Theme: 'default', 'dark', 'minimal' |
+| `closeOnSelect`   | boolean | `true`      | Close calendar after selection      |
+| `showWeekNumbers` | boolean | `false`     | Display week numbers                |
 
-## 🔧 API Methods
+### Position Options
+
+| Option     | Type           | Default  | Description                                        |
+| ---------- | -------------- | -------- | -------------------------------------------------- |
+| `position` | string         | `'auto'` | Position: 'auto', 'top', 'bottom', 'left', 'right' |
+| `appendTo` | string/element | `'body'` | Element to append calendar to                      |
+| `offsetX`  | number         | `0`      | X offset from calculated position                  |
+| `offsetY`  | number         | `0`      | Y offset from calculated position                  |
+
+### Date Restrictions
+
+| Option            | Type        | Default | Description                           |
+| ----------------- | ----------- | ------- | ------------------------------------- |
+| `minDate`         | Date/string | `null`  | Minimum selectable date               |
+| `maxDate`         | Date/string | `null`  | Maximum selectable date               |
+| `disableWeekends` | boolean     | `false` | Disable weekend dates                 |
+| `blockPastDates`  | boolean     | `false` | Disable past dates                    |
+| `disabledDates`   | Array       | `[]`    | Array of specific dates to disable    |
+| `enabledDates`    | Array       | `[]`    | Only allow specific dates (whitelist) |
+| `disableFunction` | Function    | `null`  | Custom function to disable dates      |
+
+## API Methods
 
 ### Core Methods
+
 ```javascript
-picker.open();                    // Open datepicker
-picker.close();                   // Close datepicker
-picker.setDate('2024-12-25');     // Set date
-const date = picker.getDate();    // Get selected date
-picker.destroy();                 // Clean up
+picker.open(); // Open the calendar
+picker.close(); // Close the calendar
+picker.toggle(); // Toggle calendar visibility
+picker.setDate(date); // Set selected date
+picker.getDate(); // Get selected date(s)
+picker.clear(); // Clear selection
+picker.destroy(); // Cleanup and remove
 ```
 
-### Date Management
+### Configuration Methods
+
 ```javascript
-picker.setMinDate('2024-01-01');
-picker.setMaxDate('2024-12-31');
-picker.addDisabledDates(['2024-12-25']);
-picker.setDisableWeekends(true);
+picker.setMinDate(date); // Set minimum date
+picker.setMaxDate(date); // Set maximum date
+picker.setDisableWeekends(bool); // Toggle weekend blocking
+picker.setBlockPastDates(bool); // Toggle past date blocking
+picker.addDisabledDates(dates); // Add disabled dates
+picker.clearDisabledDates(); // Clear disabled dates
 ```
 
-### Customization
+## Event Hooks
+
 ```javascript
-picker.updateIcon('📅');
-picker.setIconPosition('left');
-picker.updateOptions({ theme: 'dark' });
+const picker = new DatePicker('#input', {
+  onReady: function () {
+    // Called when picker is initialized
+  },
+
+  onChange: function (selectedDate) {
+    // Called when date selection changes
+  },
+
+  onOpen: function () {
+    // Called when calendar opens
+  },
+
+  onClose: function () {
+    // Called when calendar closes
+  },
+
+  onMonthChange: function (year, month) {
+    // Called when month changes
+  },
+
+  onYearChange: function (year) {
+    // Called when year changes
+  },
+});
 ```
 
-### Method Chaining
+## Date Restrictions Examples
+
+### Block Weekends
+
 ```javascript
-const picker = new DatePicker('#input')
-  .setMinDate('2024-01-01')
-  .setDisableWeekends(true)
-  .updateOptions({ theme: 'dark' });
+const picker = new DatePicker('#input', {
+  disableWeekends: true,
+});
 ```
 
-[View complete API →](./API_REFERENCE.md)
+### Block Past Dates
 
-## 🎨 Theming & Customization
+```javascript
+const picker = new DatePicker('#input', {
+  blockPastDates: true,
+});
+```
 
-Datelite uses **50+ CSS custom properties** for complete theming control:
+### Min/Max Dates
+
+```javascript
+const picker = new DatePicker('#input', {
+  minDate: new Date(),
+  maxDate: new Date(2024, 11, 31),
+});
+```
+
+### Disable Specific Dates
+
+```javascript
+const picker = new DatePicker('#input', {
+  disabledDates: ['2024-12-25', '2024-01-01', new Date(2024, 6, 4)],
+});
+```
+
+### Custom Disable Function
+
+```javascript
+const picker = new DatePicker('#input', {
+  disableFunction: function (date) {
+    // Disable all Fridays
+    return date.getDay() === 5;
+  },
+});
+```
+
+## Theming
+
+### Using CSS Variables
 
 ```css
 :root {
-  /* Colors */
-  --dp-primary-color: #007bff;
-  --dp-primary-hover: #0056b3;
-  --dp-primary-light: #e3f2fd;
-  
-  /* Sizes */
-  --dp-day-size: 36px;
-  --dp-font-size-base: 14px;
-  --dp-spacing-lg: 16px;
-  
-  /* Border Radius */
-  --dp-border-radius-md: 6px;
-  
-  /* Shadows */
-  --dp-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --dp-primary-color: #3b82f6;
+  --dp-primary-hover: #1d4ed8;
+  --dp-bg-primary: #ffffff;
+  --dp-text-primary: #1e293b;
+  --dp-border-radius-lg: 12px;
 }
 ```
 
-### Pre-built Themes
-- **Default** - Clean blue theme
-- **Dark** - Dark mode optimized
-- **Minimal** - Simplified design
+### Built-in Themes
 
-[Complete customization guide →](./CSS_CUSTOMIZATION.md)
+```javascript
+const picker = new DatePicker('#input', {
+  theme: 'dark', // 'default', 'dark', 'minimal'
+});
+```
 
-## 📱 Framework Integration
+## Internationalization
+
+```javascript
+const picker = new DatePicker('#input', {
+  locale: 'es',
+  weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  months: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ],
+});
+```
+
+## Framework Integration
 
 ### React
+
 ```jsx
 import { useEffect, useRef } from 'react';
-import DatePicker from '@your-org/datelite';
+import DatePicker from '@farisnceit/datelite';
+import '@farisnceit/datelite/dist/datelite.min.css';
 
-function MyDatePicker({ onChange }) {
-  const inputRef = useRef();
-  const pickerRef = useRef();
+function DatePickerComponent() {
+  const inputRef = useRef(null);
+  const pickerRef = useRef(null);
 
   useEffect(() => {
     pickerRef.current = new DatePicker(inputRef.current, {
-      onChange: onChange
+      mode: 'single',
+      onChange: (date) => console.log(date),
     });
 
-    return () => pickerRef.current?.destroy();
+    return () => pickerRef.current.destroy();
   }, []);
 
   return <input ref={inputRef} type="text" />;
@@ -276,41 +303,48 @@ function MyDatePicker({ onChange }) {
 ```
 
 ### Vue
+
 ```vue
 <template>
-  <input ref="dateInput" type="text" />
+  <input ref="datepicker" type="text" />
 </template>
 
 <script>
-import DatePicker from '@your-org/datelite';
+import DatePicker from '@farisnceit/datelite';
+import '@farisnceit/datelite/dist/datelite.min.css';
 
 export default {
   mounted() {
-    this.picker = new DatePicker(this.$refs.dateInput, {
-      onChange: this.handleChange
+    this.picker = new DatePicker(this.$refs.datepicker, {
+      mode: 'single',
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.picker?.destroy();
-  }
+  },
 };
 </script>
 ```
 
 ### Angular
+
 ```typescript
-import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import DatePicker from '@your-org/datelite';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import DatePicker from '@farisnceit/datelite';
+import '@farisnceit/datelite/dist/datelite.min.css';
 
 @Component({
-  template: '<input #dateInput type="text">'
+  selector: 'app-datepicker',
+  template: '<input #datepicker type="text">',
 })
-export class DatePickerComponent implements OnDestroy {
-  @ViewChild('dateInput') dateInput!: ElementRef;
-  private picker!: DatePicker;
+export class DatepickerComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('datepicker') datepickerInput!: ElementRef;
+  private picker: any;
 
   ngAfterViewInit() {
-    this.picker = new DatePicker(this.dateInput.nativeElement);
+    this.picker = new DatePicker(this.datepickerInput.nativeElement, {
+      mode: 'single',
+    });
   }
 
   ngOnDestroy() {
@@ -319,31 +353,7 @@ export class DatePickerComponent implements OnDestroy {
 }
 ```
 
-## 🧪 TypeScript Support
-
-Full TypeScript definitions included:
-
-```typescript
-import DatePicker, { DatePickerOptions, DateRange } from '@your-org/datelite';
-
-const options: DatePickerOptions = {
-  mode: 'range',
-  format: 'Y-m-d',
-  onChange: (dateRange: DateRange) => {
-    console.log(dateRange.start, dateRange.end);
-  }
-};
-
-const picker = new DatePicker('#input', options);
-```
-
-## 📊 Bundle Size
-
-- **JavaScript**: ~25KB minified (~8KB gzipped)
-- **CSS**: ~15KB minified (~4KB gzipped)
-- **Zero dependencies**
-
-## 🌐 Browser Support
+## Browser Support
 
 - Chrome 60+
 - Firefox 55+
@@ -352,28 +362,38 @@ const picker = new DatePicker('#input', options);
 - iOS Safari 12+
 - Chrome Mobile 60+
 
-## 🤝 Contributing
+## Bundle Size
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+- JavaScript: ~25KB minified (~8KB gzipped)
+- CSS: ~15KB minified (~4KB gzipped)
+- Total: ~40KB minified (~12KB gzipped)
 
-### Development Setup
-```bash
-git clone https://github.com/your-username/datelite.git
-cd datelite
-pnpm install
-pnpm run dev
+## TypeScript Support
+
+TypeScript definitions are included in the package.
+
+```typescript
+import DatePicker from '@farisnceit/datelite';
+
+const picker: DatePicker = new DatePicker('#input', {
+  mode: 'single',
+  format: 'Y-m-d',
+});
 ```
 
-## 📄 License
+## License
 
-MIT License - see [LICENSE](./LICENSE) file for details.
+MIT © [FarizBytes](https://github.com/farizbytes)
 
-## 🙏 Acknowledgments
+## Links
 
-- Inspired by modern date picker libraries
-- Built with accessibility and performance in mind
-- Designed for developers who need full control
+- [GitHub Repository](https://github.com/farizbytes/datelite)
+- [Documentation](https://farizbytes.github.io/datelite)
+- [Issues](https://github.com/farizbytes/datelite/issues)
+- [Changelog](https://github.com/farizbytes/datelite/blob/main/CHANGELOG.md)
 
----
+## Support
 
-**Made with ❤️ for developers who need a powerful, customizable date picker without the bloat.**
+- 📧 Email: support@farizbytes.com
+- 🐛 Issues: [GitHub Issues](https://github.com/farizbytes/datelite/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/farizbytes/datelite/discussions)

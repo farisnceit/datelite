@@ -1,261 +1,531 @@
-# 📦 NPM Publishing Guide
+# 📦 Publishing Guide
 
-This guide will help you publish the Vanilla DatePicker to npm.
+Complete guide for publishing DateLite to NPM and maintaining the package.
 
-## 🚀 Quick Publish Steps
+## Prerequisites
 
-### 1. Update Package Information
+Before publishing, ensure you have:
 
-Edit `package.json`:
+- ✅ NPM account ([Sign up here](https://www.npmjs.com/signup))
+- ✅ Git repository set up
+- ✅ Node.js and NPM installed
+- ✅ Package tested locally
+- ✅ All files ready for distribution
+
+## Pre-Publishing Checklist
+
+### 1. Update Version
+
+Update version in `package.json`:
+
 ```json
 {
-  "name": "@your-org/datelite",  // Change to your org/name
-  "version": "1.0.0",
-  "author": {
-    "name": "Your Name",                   // Your name
-    "email": "your.email@example.com",     // Your email
-    "url": "https://your-website.com"      // Your website
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-username/datelite.git"  // Your repo
-  },
-  "bugs": {
-    "url": "https://github.com/your-username/datelite/issues"  // Your issues
-  },
-  "homepage": "https://github.com/your-username/datelite#readme"  // Your homepage
+  "version": "1.0.0"
 }
 ```
 
-### 2. Install Dependencies
+Follow [Semantic Versioning](https://semver.org/):
 
-```bash
-pnpm install
+- **MAJOR** (1.0.0): Breaking changes
+- **MINOR** (0.1.0): New features, backward compatible
+- **PATCH** (0.0.1): Bug fixes, backward compatible
+
+### 2. Update CHANGELOG.md
+
+Document all changes:
+
+```markdown
+## [1.0.0] - 2026-01-06
+
+### Added
+
+- Initial release
+- Single, range, and multiple date selection
+- Comprehensive date blocking options
+
+### Changed
+
+- Updated styling system
+
+### Fixed
+
+- Position calculation bug
 ```
 
-### 3. Build the Project
-
-```bash
-pnpm run build
-```
-
-### 4. Run Tests
-
-```bash
-pnpm test
-```
-
-### 5. Prepare for Release
-
-```bash
-node scripts/prepare-release.js
-```
-
-### 6. Login to NPM
-
-```bash
-pnpm login
-```
-
-### 7. Publish
-
-```bash
-pnpm publish
-```
-
-## 📋 Pre-Publish Checklist
-
-- [ ] Updated package.json with your information
-- [ ] Updated README.md with your package name
-- [ ] All tests passing
-- [ ] Code linted and formatted
-- [ ] Build successful
-- [ ] Bundle sizes acceptable
-- [ ] Version number updated
-- [ ] CHANGELOG.md updated
-- [ ] Logged into npm
-
-## 🔧 Development Commands
+### 3. Build Distribution Files
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
-# Start development server
-pnpm run serve
+# Build all files
+npm run build
 
-# Run tests
-pnpm test
-pnpm run test:watch
-
-# Lint code
-pnpm run lint
-pnpm run lint:fix
-
-# Format code
-pnpm run format
-
-# Build project
-pnpm run build
-pnpm run build:js
-pnpm run build:css
-
-# Check bundle sizes
-pnpm run size
-
-# Prepare release
-node scripts/prepare-release.js
-
-# Publish to npm
-pnpm publish
+# This creates:
+# - dist/datelite.js
+# - dist/datelite.min.js
+# - dist/datelite.css
+# - dist/datelite.min.css
 ```
 
-## 📁 Package Structure
+### 4. Test the Package
+
+```bash
+# Test locally
+npm link
+
+# In another project
+npm link @farisnceit/datelite
+
+# Test the package
+```
+
+### 5. Verify Package Contents
+
+Check what will be published:
+
+```bash
+npm pack --dry-run
+```
+
+Review the output to ensure only necessary files are included.
+
+### 6. Update Documentation
+
+Ensure all documentation is current:
+
+- ✅ README.md
+- ✅ QUICK_START.md
+- ✅ DEVELOPER_GUIDE.md
+- ✅ examples/documentation.html
+
+## Publishing to NPM
+
+### First Time Setup
+
+1. **Login to NPM**
+
+```bash
+npm login
+```
+
+Enter your credentials:
+
+- Username
+- Password
+- Email
+- 2FA code (if enabled)
+
+2. **Verify Login**
+
+```bash
+npm whoami
+```
+
+### Publishing
+
+#### 1. Publish Public Package
+
+```bash
+npm publish --access public
+```
+
+#### 2. Verify Publication
+
+Check on NPM:
+
+```
+https://www.npmjs.com/package/@farisnceit/datelite
+```
+
+#### 3. Test Installation
+
+```bash
+npm install @farisnceit/datelite
+```
+
+## Post-Publishing Tasks
+
+### 1. Create Git Tag
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+### 2. Create GitHub Release
+
+1. Go to GitHub repository
+2. Click "Releases" → "Create a new release"
+3. Select the tag (v1.0.0)
+4. Add release notes from CHANGELOG.md
+5. Attach distribution files (optional)
+6. Publish release
+
+### 3. Update Documentation Site
+
+If you have a documentation site:
+
+```bash
+# Build docs
+npm run build:docs
+
+# Deploy to GitHub Pages
+npm run deploy:docs
+```
+
+## Package.json Configuration
+
+Ensure your `package.json` is properly configured:
+
+```json
+{
+  "name": "@farisnceit/datelite",
+  "version": "1.0.0",
+  "description": "A modern, lightweight date picker component",
+  "main": "dist/datelite.min.js",
+  "module": "dist/datelite.js",
+  "style": "dist/datelite.min.css",
+  "types": "types/index.d.ts",
+
+  "files": ["dist", "src", "types", "README.md", "LICENSE"],
+
+  "keywords": [
+    "datepicker",
+    "date-picker",
+    "calendar",
+    "date-range",
+    "vanilla-js",
+    "javascript",
+    "date-selection",
+    "datetime-picker"
+  ],
+
+  "author": "FarizBytes <support@farizbytes.com>",
+  "license": "MIT",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/farizbytes/datelite.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/farizbytes/datelite/issues"
+  },
+
+  "homepage": "https://github.com/farizbytes/datelite#readme"
+}
+```
+
+## Files to Include
+
+### Essential Files
 
 ```
 datelite/
-├── dist/                      # Built files (published)
-│   ├── datelite.js         # UMD build
-│   ├── datepicker.min.js     # UMD minified
-│   ├── datelite.esm.js     # ES module
-│   ├── datelite.cjs.js     # CommonJS
-│   ├── datelite.css        # Styles
-│   └── datelite.min.css    # Minified styles
-├── src/                      # Source files
-│   ├── DatePicker.js         # Main component
-│   └── datelite.css        # Styles with variables
-├── types/                    # TypeScript definitions
-│   └── index.d.ts           # Type definitions
-├── tests/                    # Test files
-├── package.json             # Package configuration
-├── README.md                # Package documentation
-└── LICENSE                  # MIT license
+├── dist/                 # Built files (required)
+│   ├── datelite.js
+│   ├── datelite.min.js
+│   ├── datelite.css
+│   └── datelite.min.css
+├── src/                  # Source files (optional)
+│   ├── DatePicker.js
+│   └── datelite.css
+├── types/                # TypeScript definitions (if available)
+│   └── index.d.ts
+├── README.md            # Package documentation
+├── LICENSE              # License file
+├── CHANGELOG.md         # Version history
+└── package.json         # Package configuration
 ```
 
-## 🎯 Package Entry Points
+### .npmignore
 
-The package provides multiple entry points:
+Create `.npmignore` to exclude unnecessary files:
 
-- **Main (UMD)**: `dist/datelite.min.js`
-- **Module (ESM)**: `src/DatePicker.js`
-- **Types**: `types/index.d.ts`
-- **Styles**: `dist/datelite.min.css`
+```
+# Development files
+node_modules/
+.git/
+.github/
+.vscode/
 
-## 📊 Bundle Analysis
+# Examples and tests
+examples/
+tests/
+*.test.js
 
-After building, check bundle sizes:
+# Build configuration
+rollup.config.js
+postcss.config.js
+.eslintrc.js
+.prettierrc
+
+# Documentation (keep README.md)
+DEVELOPER_GUIDE.md
+PUBLISH_GUIDE.md
+CONTRIBUTING.md
+
+# Misc
+.DS_Store
+*.log
+.env
+```
+
+## Version Management
+
+### Updating Versions
+
+Use NPM version commands:
 
 ```bash
-pnpm run size
+# Patch release (1.0.0 → 1.0.1)
+npm version patch
+
+# Minor release (1.0.0 → 1.1.0)
+npm version minor
+
+# Major release (1.0.0 → 2.0.0)
+npm version major
 ```
 
-Expected sizes:
-- JavaScript: ~25KB minified
-- CSS: ~15KB minified
+This automatically:
 
-## 🔄 Version Management
+- Updates `package.json`
+- Creates a git commit
+- Creates a git tag
 
-Follow [Semantic Versioning](https://semver.org/):
+### Publishing Updates
 
 ```bash
-# Patch release (bug fixes)
-pnpm version patch
+# Build
+npm run build
 
-# Minor release (new features)
-pnpm version minor
+# Publish
+npm publish
 
-# Major release (breaking changes)
-pnpm version major
+# Push tags
+git push --tags
 ```
 
-## 🌐 CDN Usage
+## Beta/Alpha Releases
 
-After publishing, users can use via CDN:
+### Publishing Beta Version
+
+```bash
+# Update version
+npm version 1.1.0-beta.0
+
+# Publish with tag
+npm publish --tag beta
+
+# Users install with:
+npm install @farisnceit/datelite@beta
+```
+
+### Publishing Alpha Version
+
+```bash
+npm version 1.2.0-alpha.0
+npm publish --tag alpha
+```
+
+### Promoting to Latest
+
+```bash
+# Make beta the latest
+npm dist-tag add @farisnceit/datelite@1.1.0-beta.0 latest
+```
+
+## Unpublishing
+
+⚠️ **Warning**: Unpublishing is discouraged and has restrictions.
+
+### Unpublish Specific Version
+
+```bash
+npm unpublish @farisnceit/datelite@1.0.0
+```
+
+### Unpublish Entire Package
+
+```bash
+npm unpublish @farisnceit/datelite --force
+```
+
+**Note**: You can only unpublish within 72 hours of publishing.
+
+## Deprecating Versions
+
+Instead of unpublishing, deprecate old versions:
+
+```bash
+npm deprecate @farisnceit/datelite@1.0.0 "Please upgrade to 1.1.0"
+```
+
+## CDN Distribution
+
+After publishing to NPM, your package is automatically available on CDNs:
+
+### jsDelivr
 
 ```html
-<!-- CSS -->
-<link rel="stylesheet" href="https://unpkg.com/@your-org/datelite@latest/dist/datelite.min.css">
-
-<!-- JavaScript -->
-<script src="https://unpkg.com/@your-org/datelite@latest/dist/datelite.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@farisnceit/datelite/dist/datelite.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@farisnceit/datelite/dist/datelite.min.js"></script>
 ```
 
-## 🔐 Security
+### unpkg
 
-### NPM Token Setup
+```html
+<link rel="stylesheet" href="https://unpkg.com/@farisnceit/datelite/dist/datelite.min.css" />
+<script src="https://unpkg.com/@farisnceit/datelite/dist/datelite.min.js"></script>
+```
 
-1. Create npm account: https://www.npmjs.com/signup
-2. Generate access token: https://www.npmjs.com/settings/tokens
-3. Add to GitHub secrets as `NPM_TOKEN`
+## Monitoring
 
-### Package Security
+### NPM Statistics
 
-- No dependencies = no security vulnerabilities
-- Regular security audits: `npm audit`
-- Keep dev dependencies updated
+Check package stats:
 
-## 📈 Post-Publish
+- Downloads: `https://npm-stat.com/charts.html?package=@farisnceit/datelite`
+- NPM page: `https://www.npmjs.com/package/@farisnceit/datelite`
 
-### Update Documentation
+### Bundle Size
 
-1. Update README badges with correct package name
-2. Update installation instructions
-3. Update CDN links
-4. Create GitHub release
+Monitor bundle size:
 
-### Promote Your Package
+- Bundlephobia: `https://bundlephobia.com/package/@farisnceit/datelite`
 
-1. Share on social media
-2. Submit to awesome lists
-3. Write blog posts
-4. Create demos and examples
+## Maintenance
 
-## 🐛 Troubleshooting
+### Regular Updates
 
-### Common Issues
+1. **Security Updates**
 
-**Build Fails:**
+   ```bash
+   npm audit
+   npm audit fix
+   ```
+
+2. **Dependency Updates**
+
+   ```bash
+   npm outdated
+   npm update
+   ```
+
+3. **Test Before Publishing**
+   ```bash
+   npm test
+   npm run build
+   ```
+
+### Responding to Issues
+
+1. Monitor GitHub issues
+2. Respond promptly
+3. Fix bugs in patch releases
+4. Add features in minor releases
+
+## Best Practices
+
+### Before Every Release
+
+- [ ] Run all tests
+- [ ] Update CHANGELOG.md
+- [ ] Update version number
+- [ ] Build distribution files
+- [ ] Test package locally
+- [ ] Review package contents
+- [ ] Update documentation
+
+### After Every Release
+
+- [ ] Create git tag
+- [ ] Create GitHub release
+- [ ] Update documentation site
+- [ ] Announce on social media
+- [ ] Monitor for issues
+
+### Semantic Versioning
+
+Follow these rules:
+
+**MAJOR (1.0.0 → 2.0.0)**
+
+- Breaking API changes
+- Removed features
+- Changed behavior
+
+**MINOR (1.0.0 → 1.1.0)**
+
+- New features
+- Backward compatible
+- Deprecations
+
+**PATCH (1.0.0 → 1.0.1)**
+
+- Bug fixes
+- Performance improvements
+- Documentation updates
+
+## Troubleshooting
+
+### "Package already exists"
+
 ```bash
-# Clear node_modules and reinstall
-rm -rf node_modules pnpm-lock.yaml
-pnpm install
+# Check if name is available
+npm view @farisnceit/datelite
+
+# If taken, choose a different name
 ```
 
-**Tests Fail:**
+### "You must verify your email"
+
 ```bash
-# Run tests in verbose mode
-pnpm test -- --verbose
+# Check NPM email settings
+npm profile get
+
+# Verify email in NPM account settings
 ```
 
-**Bundle Too Large:**
+### "403 Forbidden"
+
 ```bash
-# Analyze bundle
-pnpm run build
-ls -la dist/
+# Re-login
+npm logout
+npm login
+
+# Check organization access
+npm access ls-packages @farisnceit
 ```
 
-**Publish Fails:**
+### Build Errors
+
 ```bash
-# Check pnpm login
-pnpm whoami
-
-# Check package name availability
-pnpm view @your-org/datelite
+# Clean and rebuild
+rm -rf dist node_modules
+npm install
+npm run build
 ```
 
-## 📞 Support
+## Resources
 
-If you encounter issues:
+- [NPM Documentation](https://docs.npmjs.com/)
+- [Semantic Versioning](https://semver.org/)
+- [Keep a Changelog](https://keepachangelog.com/)
+- [NPM Package Best Practices](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry)
 
-1. Check this guide
-2. Review error messages
-3. Check npm documentation
-4. Ask in GitHub discussions
+## Support
 
-## 🎉 Success!
+Need help publishing?
 
-Once published, your package will be available at:
-- NPM: https://www.npmjs.com/package/@your-org/datelite
-- CDN: https://unpkg.com/@your-org/datelite
+- 📧 Email: support@farizbytes.com
+- 💬 GitHub Discussions: [Ask a question](https://github.com/farizbytes/datelite/discussions)
 
-Congratulations on publishing your Datelite component! 🎊
+---
+
+**Good luck with your release! 🚀**

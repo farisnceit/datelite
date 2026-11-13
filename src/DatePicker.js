@@ -1035,6 +1035,8 @@ class DatePicker {
   }
 
   handleDateSelect(date) {
+    if (this.dom.input?.matches(':disabled')) return;
+
     switch (this.options.mode) {
       case 'single':
         this.state.selectedDates = [date];

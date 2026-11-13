@@ -98,6 +98,22 @@ describe('DatePicker', () => {
     });
   });
 
+  test('keeps the selected date when the input is disabled while open', () => {
+    const initialDate = new Date(2026, 10, 10);
+    datePicker = new DatePicker(input, {
+      mode: 'single',
+      format: 'Y-m-d',
+      defaultDate: initialDate,
+    });
+    datePicker.open();
+    input.disabled = true;
+
+    datePicker.dom.calendar.querySelector('[data-date="2026-11-13"]').click();
+
+    expect(input.value).toBe('2026-11-10');
+    expect(datePicker.getDate()).toEqual(initialDate);
+  });
+
   describe('Range Mode', () => {
     beforeEach(() => {
       datePicker = new DatePicker(input, { mode: 'range' });
